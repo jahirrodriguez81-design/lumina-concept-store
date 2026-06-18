@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.js": { "memory": 256, "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/api/apply-promo", "destination": "/api/apply-promo" },
+    { "source": "/api/config",       "destination": "/api/config" },
+    { "source": "/api/quote",        "destination": "/api/quote" },
+    { "source": "/api/create-order", "destination": "/api/create-order" },
+    { "source": "/api/capture-order","destination": "/api/capture-order" },
+    { "source": "/api/admin-orders", "destination": "/api/admin-orders" }
+  ]
+}

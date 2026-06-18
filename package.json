@@ -1,19 +1,21 @@
 {
   "name": "lumina-concept-store",
   "version": "1.0.0",
-  "description": "Backend para validación de pagos de Lumina Concept Store",
+  "description": "Tienda de moda digital Ecuador — Node.js + PayPal + Supabase",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "npx nodemon server.js"
+    "dev": "npx nodemon server.js",
+    "vercel-dev": "npx vercel dev"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^7.0.0",
     "helmet": "^8.0.0"
-  },
+  }
 }

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Lumina Concept Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080808;
+      --surface:  #111111;
+      --surface2: #1a1a1a;
+      --border:   #2a2a2a;
+      --white:    #f5f5f5;
+      --gray:     #888;
+      --accent:   #c4ff00;
+      --green:    #22c55e;
+      --yellow:   #f59e0b;
+      --red:      #ef4444;
+    }
+
+    body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; gap: 20px;
+    }
+    #login-screen .logo { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: 4px; }
+    #login-screen .logo span { color: var(--accent); }
+    #login-screen h2 { font-family: 'Syne', sans-serif; font-size: 18px; color: var(--gray); }
+    #login-screen input {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px 20px; color: var(--white); font-size: 15px; width: 320px; outline: none;
+    }
+    #login-screen input:focus { border-color: var(--accent); }
+    #login-screen button {
+      background: var(--accent); color: var(--bg); border: none; border-radius: 12px;
+      padding: 14px 32px; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
+      cursor: pointer; width: 320px; transition: opacity .2s;
+    }
+    #login-screen button:hover { opacity: .85; }
+    #login-error { color: var(--red); font-size: 13px; display: none; }
+
+    /* ── LAYOUT ── */
+    #app { display: none; }
+    .topbar {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 32px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar .logo { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 3px; }
+    .topbar .logo span { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .badge-live { background: rgba(196,255,0,.12); color: var(--accent); border: 1px solid rgba(196,255,0,.25); border-radius: 100px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .btn-logout { background: none; border: 1px solid var(--border); color: var(--gray); border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all .2s; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+
+    /* ── KPI CARDS ── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; }
+    .kpi-label { font-size: 12px; color: var(--gray); font-weight: 600; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 8px; }
+    .kpi-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+    .kpi-value.accent { color: var(--accent); }
+    .kpi-value.green  { color: var(--green); }
+    .kpi-sub { font-size: 12px; color: var(--gray); margin-top: 4px; }
+
+    /* ── FILTERS ── */
+    .filters { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-btn {
+      background: var(--surface); border: 1px solid var(--border); color: var(--gray);
+      border-radius: 100px; padding: 7px 18px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+    .filter-btn.active, .filter-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(196,255,0,.06); }
+    .filter-btn.all.active { border-color: var(--white); color: var(--white); background: rgba(255,255,255,.05); }
+    .refresh-btn {
+      margin-left: auto; background: var(--surface2); border: 1px solid var(--border);
+      color: var(--white); border-radius: 100px; padding: 7px 18px; font-size: 12px;
+      font-weight: 600; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 14px 20px; text-align: left; font-size: 11px; font-weight: 700;
+      color: var(--gray); letter-spacing: .5px; text-transform: uppercase;
+      border-bottom: 1px solid var(--border); background: var(--surface2);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,.02); }
+    tbody td { padding: 14px 20px; font-size: 13px; }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      border-radius: 100px; padding: 3px 10px; font-size: 11px; font-weight: 700;
+    }
+    .status-badge.completed { background: rgba(34,197,94,.12); color: var(--green); }
+    .status-badge.pending   { background: rgba(245,158,11,.12); color: var(--yellow); }
+    .status-badge.failed    { background: rgba(239,68,68,.12);  color: var(--red); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    .order-id { font-family: monospace; font-size: 11px; color: var(--gray); }
+    .amount { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); }
+    .items-count { color: var(--gray); font-size: 12px; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--gray); }
+    .empty-state h4 { font-family: 'Syne', sans-serif; font-size: 18px; margin-bottom: 8px; color: var(--white); }
+
+    .loading { text-align: center; padding: 40px; color: var(--gray); font-size: 14px; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="logo">LUMIN<span>A</span></div>
+  <h2>Panel de administración</h2>
+  <input type="password" id="admin-token" placeholder="Token de acceso" autocomplete="off" />
+  <button onclick="login()">Ingresar →</button>
+  <span id="login-error">Token incorrecto. Inténtalo de nuevo.</span>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="logo">LUMIN<span>A</span> <span style="font-size:12px;font-weight:400;color:var(--gray);letter-spacing:1px;margin-left:8px">ADMIN</span></div>
+    <div class="topbar-right">
+      <span class="badge-live" id="env-badge">SANDBOX</span>
+      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- KPIs -->
+    <div class="kpi-grid" id="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Total ventas</div><div class="kpi-value accent" id="kpi-total">—</div><div class="kpi-sub">órdenes completadas</div></div>
+      <div class="kpi-card"><div class="kpi-label">Órdenes completadas</div><div class="kpi-value green" id="kpi-completed">—</div><div class="kpi-sub">pagos confirmados</div></div>
+      <div class="kpi-card"><div class="kpi-label">Órdenes pendientes</div><div class="kpi-value" id="kpi-pending">—</div><div class="kpi-sub">esperando captura</div></div>
+      <div class="kpi-card"><div class="kpi-label">Ticket promedio</div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-sub">por orden completada</div></div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="section-title">Órdenes</div>
+    <div class="filters">
+      <button class="filter-btn all active" onclick="setFilter(null, this)">Todas</button>
+      <button class="filter-btn" onclick="setFilter('completed', this)">Completadas</button>
+      <button class="filter-btn" onclick="setFilter('pending', this)">Pendientes</button>
+      <button class="filter-btn" onclick="setFilter('failed', this)">Fallidas</button>
+      <button class="refresh-btn" onclick="loadOrders()"><span class="spinner" id="refresh-spinner" style="display:none"></span>Actualizar</button>
+    </div>
+
+    <div class="table-wrap">
+      <div class="loading" id="table-loading"><span class="spinner"></span>Cargando órdenes...</div>
+      <table id="orders-table" style="display:none">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>ID de orden PayPal</th>
+            <th>Estado</th>
+            <th>Productos</th>
+            <th>Subtotal</th>
+            <th>Envío</th>
+            <th>Descuento</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="orders-body"></tbody>
+      </table>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <h4>Sin órdenes</h4>
+        <p>No hay órdenes con el filtro seleccionado.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  let adminToken = '';
+  let currentFilter = null;
+  let allOrders = [];
+
+  function login() {
+    const input = document.getElementById('admin-token');
+    const token = input.value.trim();
+    if (!token) return;
+    adminToken = token;
+    loadOrders();
+  }
+
+  document.getElementById('admin-token').addEventListener('keydown', e => {
+    if (e.key === 'Enter') login();
+  });
+
+  function logout() {
+    adminToken = '';
+    allOrders = [];
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('admin-token').value = '';
+    document.getElementById('login-error').style.display = 'none';
+  }
+
+  function setFilter(status, btn) {
+    currentFilter = status;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable(allOrders);
+  }
+
+  async function loadOrders() {
+    const spinner = document.getElementById('refresh-spinner');
+    spinner.style.display = 'inline-block';
+
+    try {
+      const res = await fetch('/api/admin-orders', {
+        headers: { 'x-admin-token': adminToken }
+      });
+
+      if (res.status === 401) {
+        document.getElementById('login-error').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('login-error').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+
+      const { orders } = await res.json();
+      allOrders = orders || [];
+      updateKPIs(allOrders);
+      renderTable(allOrders);
+    } catch (err) {
+      alert('Error de conexión. Verifica que el servidor esté activo.');
+    } finally {
+      spinner.style.display = 'none';
+    }
+  }
+
+  function updateKPIs(orders) {
+    const completed = orders.filter(o => o.status === 'completed');
+    const pending   = orders.filter(o => o.status === 'pending');
+    const totalSales = completed.reduce((s, o) => s + parseFloat(o.total), 0);
+    const avg = completed.length ? totalSales / completed.length : 0;
+
+    document.getElementById('kpi-total').textContent     = `$${totalSales.toFixed(2)}`;
+    document.getElementById('kpi-completed').textContent = completed.length;
+    document.getElementById('kpi-pending').textContent   = pending.length;
+    document.getElementById('kpi-avg').textContent       = `$${avg.toFixed(2)}`;
+  }
+
+  function renderTable(orders) {
+    const filtered = currentFilter ? orders.filter(o => o.status === currentFilter) : orders;
+    const tbody  = document.getElementById('orders-body');
+    const table  = document.getElementById('orders-table');
+    const empty  = document.getElementById('empty-state');
+    const loader = document.getElementById('table-loading');
+
+    loader.style.display = 'none';
+
+    if (filtered.length === 0) {
+      table.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+    table.style.display = 'table';
+
+    tbody.innerHTML = filtered.map(o => {
+      const date  = new Date(o.created_at).toLocaleString('es-EC', { dateStyle: 'short', timeStyle: 'short' });
+      const items = Array.isArray(o.items) ? o.items.length : '—';
+      const statusMap = {
+        completed: '<span class="status-badge completed"><span class="status-dot"></span>Completada</span>',
+        pending:   '<span class="status-badge pending"><span class="status-dot"></span>Pendiente</span>',
+        failed:    '<span class="status-badge failed"><span class="status-dot"></span>Fallida</span>',
+      };
+      return `
+        <tr>
+          <td>${date}</td>
+          <td><span class="order-id">${o.paypal_order_id}</span></td>
+          <td>${statusMap[o.status] || o.status}</td>
+          <td><span class="items-count">${items} producto${items !== 1 ? 's' : ''}</span></td>
+          <td>$${parseFloat(o.subtotal || 0).toFixed(2)}</td>
+          <td>${parseFloat(o.shipping || 0) === 0 ? '<span style="color:var(--accent)">Gratis</span>' : '$' + parseFloat(o.shipping).toFixed(2)}</td>
+          <td>${parseFloat(o.discount || 0) > 0 ? '-$' + parseFloat(o.discount).toFixed(2) : '—'}</td>
+          <td><span class="amount">$${parseFloat(o.total).toFixed(2)}</span></td>
+        </tr>`;
+    }).join('');
+  }
+</script>
+</body>
+</html>

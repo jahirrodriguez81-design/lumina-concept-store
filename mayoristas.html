@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mayoristas B2B — Lumina Concept Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ── B2B HERO ── */
+    .b2b-hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: var(--nav-h);
+      overflow: hidden;
+    }
+
+    .b2b-hero-left {
+      padding: 80px 64px 80px 48px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .b2b-hero-left h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(48px, 5.5vw, 80px); font-weight: 800;
+      letter-spacing: -3px; line-height: 0.95;
+    }
+
+    .b2b-hero-left h1 .outline { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .b2b-hero-left h1 .accent { color: var(--accent); }
+
+    .b2b-hero-left p { color: var(--gray); font-size: 16px; line-height: 1.8; max-width: 420px; margin-top: 24px; margin-bottom: 36px; }
+
+    .b2b-hero-right {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .b2b-hero-right img {
+      width: 100%; height: 100%; object-fit: cover; filter: brightness(.5) saturate(.6);
+    }
+
+    .b2b-hero-right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 25%),
+                  linear-gradient(to bottom, transparent 50%, rgba(8,8,8,.7));
+    }
+
+    .b2b-hero-stats {
+      position: absolute; bottom: 40px; right: 40px; left: 40px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px;
+    }
+
+    .b2b-stat {
+      background: rgba(8,8,8,.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--gray-border);
+      border-radius: 16px; padding: 20px;
+      text-align: center;
+    }
+
+    .b2b-stat .num {
+      font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+
+    .b2b-stat .lbl { font-size: 11px; color: var(--gray); margin-top: 4px; }
+
+    /* ── BENEFITS ── */
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+
+    .benefit-card {
+      background: var(--surface);
+      border: 1px solid var(--gray-light);
+      border-radius: 20px; padding: 32px;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.4);
+      border-color: var(--accent);
+    }
+
+    .benefit-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--accent-dim); border: 1px solid rgba(196,255,0,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+
+    .benefit-card h3 {
+      font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700;
+      margin-bottom: 10px; color: var(--white);
+    }
+
+    .benefit-card p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+
+    /* ── FORM ── */
+    .register-grid {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start;
+    }
+
+    .register-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 3vw, 44px); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.1;
+    }
+
+    .register-info h3 span { color: var(--accent); }
+    .register-info p { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 28px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+
+    /* ── PARTNERS ── */
+    .partners-strip {
+      display: flex; gap: 16px; align-items: center;
+      justify-content: center; flex-wrap: wrap;
+      padding: 48px; background: var(--surface);
+      border-radius: 24px; border: 1px solid var(--gray-light);
+    }
+
+    .partner-pill {
+      background: var(--surface2);
+      border: 1px solid var(--gray-border);
+      border-radius: 100px; padding: 12px 24px;
+      font-size: 13px; font-weight: 600;
+      font-family: 'Syne', sans-serif;
+      color: var(--gray-mid);
+      display: flex; align-items: center; gap: 8px;
+      transition: border-color .2s, color .2s;
+    }
+
+    .partner-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PROCESS ── */
+    .process-section {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+
+    .process-visual {
+      height: 500px; border-radius: 24px; overflow: hidden; position: relative;
+    }
+
+    .process-visual img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.55) saturate(.6); }
+
+    .process-visual-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(8,8,8,.85));
+    }
+
+    .process-badge {
+      position: absolute; bottom: 28px; left: 28px;
+      background: var(--accent); border-radius: 14px; padding: 16px 22px; color: var(--bg);
+    }
+
+    .process-badge .title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; }
+    .process-badge .sub { font-size: 12px; opacity: .6; margin-top: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="mainNav">
+  <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="catalogo.html">Catálogo</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="mayoristas.html" class="active">Mayoristas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-search" onclick="openSearch()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+    <a href="carrito.html" class="btn-cart"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Carrito <span class="cart-count">0</span></a>
+  </div>
+</nav>
+
+<!-- B2B HERO -->
+<section class="b2b-hero">
+  <div class="b2b-hero-left" data-aos="fade-right" data-aos-duration="900">
+    <div class="section-tag"><span class="dot"></span> Business to Business</div>
+    <h1 class="mt-16">
+      CRECE<br/>
+      <span class="outline">CON</span><br/>
+      <span class="accent">LUMINA.</span>
+    </h1>
+    <p>¿Tienes una boutique, tienda online o eres distribuidor? Únete al programa B2B y accede a precios especiales, facturación formal y un asesor dedicado.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="#registro" class="btn btn-accent btn-lg">Registrarme ahora →</a>
+      <a href="contacto.html" class="btn btn-outline btn-lg">Hablar con asesor</a>
+    </div>
+  </div>
+  <div class="b2b-hero-right" data-aos="fade-left" data-aos-duration="1000">
+    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=900&auto=format&fit=crop&q=80" alt="B2B" />
+    <div class="b2b-hero-right-overlay"></div>
+    <div class="b2b-hero-stats">
+      <div class="b2b-stat"><div class="num">20%</div><div class="lbl">Descuento mínimo</div></div>
+      <div class="b2b-stat"><div class="num">40%</div><div class="lbl">Descuento máximo</div></div>
+      <div class="b2b-stat"><div class="num">24h</div><div class="lbl">Activación</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section">
+  <div data-aos="fade-up">
+    <div class="section-tag"><span class="dot"></span> Por qué elegirnos</div>
+    <h2 class="section-title mt-16 mb-32">Beneficios <em>exclusivos</em></h2>
+  </div>
+  <div class="benefits-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9 9h4.5a1.5 1.5 0 0 1 0 3H11a1.5 1.5 0 0 0 0 3H15"/></svg></div>
+      <h3>Descuentos por volumen</h3>
+      <p>Desde 20% en pedidos de 10 unidades hasta 40% en pedidos de 50+. Precios para maximizar tu margen de ganancia.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></div>
+      <h3>Facturación formal</h3>
+      <p>Emisión de facturas con RUC para todas tus compras. Proceso 100% formal adaptado a la normativa ecuatoriana.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <h3>Asesor B2B dedicado</h3>
+      <p>Un asesor exclusivo para tu cuenta. Atención por WhatsApp Business y email con respuesta en menos de 4 horas.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <h3>Logística prioritaria</h3>
+      <p>Tus pedidos tienen prioridad en nuestro centro de distribución. Entrega garantizada en 3–5 días hábiles a nivel nacional.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <h3>Catálogo B2B exclusivo</h3>
+      <p>Acceso a líneas de productos no disponibles en el canal B2C. Solicitud de muestra física disponible.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.74"/></svg></div>
+      <h3>Devolución 30 días</h3>
+      <p>Política extendida a 30 días para mayoristas. Sin complicaciones, sin preguntas. Tu satisfacción es nuestra prioridad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" style="padding-top:0">
+  <div data-aos="fade-up">
+    <div class="section-tag"><span class="dot"></span> Planes</div>
+    <h2 class="section-title mt-16 mb-32">Descuentos por <em>volumen</em></h2>
+  </div>
+  <div class="pricing-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="pricing-card">
+      <div class="pricing-tier">Tier Básico</div>
+      <div class="pricing-units">10–24 und.</div>
+      <div class="pricing-sub">por pedido</div>
+      <div class="pricing-discount">20%</div>
+      <ul class="pricing-features">
+        <li>Acceso al catálogo mayorista</li>
+        <li>Factura con RUC</li>
+        <li>Soporte por WhatsApp</li>
+        <li>Envío estándar (5–7 días)</li>
+      </ul>
+      <a href="#registro" class="btn btn-outline" style="width:100%;justify-content:center">Empezar →</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Más popular</div>
+      <div class="pricing-tier">Tier Plata</div>
+      <div class="pricing-units">25–49 und.</div>
+      <div class="pricing-sub">por pedido</div>
+      <div class="pricing-discount">30%</div>
+      <ul class="pricing-features">
+        <li>Todo lo del Tier Básico</li>
+        <li>Asesor de cuenta dedicado</li>
+        <li>Envío prioritario (3–4 días)</li>
+        <li>Acceso a prelanzamientos</li>
+      </ul>
+      <a href="#registro" class="btn btn-accent" style="width:100%;justify-content:center">Empezar →</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tier">Tier Oro</div>
+      <div class="pricing-units">50+ und.</div>
+      <div class="pricing-sub">por pedido</div>
+      <div class="pricing-discount">40%</div>
+      <ul class="pricing-features">
+        <li>Todo lo del Tier Plata</li>
+        <li>Crédito a 30 días</li>
+        <li>Envío express (1–2 días)</li>
+        <li>Co-marketing y branding</li>
+      </ul>
+      <a href="#registro" class="btn btn-white" style="width:100%;justify-content:center">Empezar →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" style="padding-top:0">
+  <div class="process-section">
+    <div class="process-visual" data-aos="fade-right">
+      <img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=800&auto=format&fit=crop&q=80" alt="Process" />
+      <div class="process-visual-overlay"></div>
+      <div class="process-badge">
+        <div class="title">Activación en 24h</div>
+        <div class="sub">Sin trámites complicados</div>
+      </div>
+    </div>
+    <div data-aos="fade-left">
+      <div class="section-tag"><span class="dot"></span> Proceso</div>
+      <h2 class="section-title mt-16 mb-32">Cómo <em>funciona</em></h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Regístrate como mayorista</h4>
+            <p>Completa el formulario con tu RUC, nombre de empresa y tipo de negocio. Menos de 5 minutos.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Verificamos tu cuenta</h4>
+            <p>Revisamos tu registro y activamos tu acceso en menos de 24 horas. Confirmación por email y WhatsApp.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Accede al catálogo B2B</h4>
+            <p>Visualiza precios especiales, stock disponible y genera órdenes de compra directamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Recibe y vende</h4>
+            <p>Procesamos tu pedido con prioridad. Recibes mercancía con factura y guía de envío. ¡A vender!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="section-sm" style="padding-left:48px;padding-right:48px">
+  <div class="partners-strip" data-aos="fade-up">
+    <div class="partner-pill">Shopify</div>
+    <div class="partner-pill">WooCommerce</div>
+    <div class="partner-pill">PagoFácil</div>
+    <div class="partner-pill">Servientrega</div>
+    <div class="partner-pill">Laar Courier</div>
+    <div class="partner-pill">WhatsApp Business</div>
+  </div>
+</section>
+
+<!-- REGISTRO -->
+<section class="section" id="registro">
+  <div class="register-grid">
+    <div data-aos="fade-right">
+      <div class="section-tag"><span class="dot"></span> Únete ahora</div>
+      <h3 class="mt-16">Solicita tu<br/><span>cuenta mayorista</span></h3>
+      <p class="mt-16">Completa el formulario y te contactamos en menos de 24 horas para activar tu cuenta y asignarte un asesor B2B.</p>
+      <div class="steps" style="margin-top:8px">
+        <div class="step">
+          <div class="step-num" style="width:32px;height:32px;font-size:13px">✓</div>
+          <div class="step-content"><p>Sin costo de registro</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num" style="width:32px;height:32px;font-size:13px">✓</div>
+          <div class="step-content"><p>Activación en 24 horas</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num" style="width:32px;height:32px;font-size:13px">✓</div>
+          <div class="step-content"><p>Sin mínimo de permanencia</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:40px" data-aos="fade-left">
+      <form id="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>Nombre completo</label><input type="text" placeholder="Ej: Carlos Méndez" required /></div>
+          <div class="form-group"><label>Empresa / Negocio</label><input type="text" placeholder="Ej: Boutique Moda SA" required /></div>
+        </div>
+        <div class="form-group"><label>RUC o Cédula</label><input type="text" placeholder="0912345678001" required /></div>
+        <div class="form-group"><label>Correo electrónico</label><input type="email" placeholder="tu@empresa.com" required /></div>
+        <div class="form-group"><label>WhatsApp de contacto</label><input type="tel" placeholder="+593 9X XXX XXXX" required /></div>
+        <div class="form-group">
+          <label>Tipo de negocio</label>
+          <select><option>Boutique / Tienda física</option><option>Tienda online</option><option>Distribuidor mayorista</option><option>Otro</option></select>
+        </div>
+        <div class="form-group">
+          <label>Volumen estimado mensual</label>
+          <select><option>10–24 unidades (Tier Básico 20%)</option><option>25–49 unidades (Tier Plata 30%)</option><option>50+ unidades (Tier Oro 40%)</option></select>
+        </div>
+        <button type="submit" class="btn btn-accent" style="width:100%;justify-content:center;margin-top:8px">
+          Enviar solicitud →
+        </button>
+        <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:12px">✓ Sin costo · ✓ Respuesta en 24h</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="padding-top:0">
+  <div data-aos="fade-up">
+    <div class="section-tag"><span class="dot"></span> Preguntas frecuentes</div>
+    <h2 class="section-title mt-16 mb-32">FAQ <em>Mayoristas</em></h2>
+  </div>
+  <div class="faq-list" style="max-width:720px" data-aos="fade-up">
+    <div class="faq-item">
+      <button class="faq-question">¿Cuál es el pedido mínimo para ser mayorista? <span class="arrow">▼</span></button>
+      <div class="faq-answer">El mínimo es de 10 unidades por pedido para acceder al Tier Básico con 20% de descuento. No hay restricción de mezcla de productos.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Puedo mezclar productos en un mismo pedido? <span class="arrow">▼</span></button>
+      <div class="faq-answer">Sí, puedes combinar cualquier categoría del catálogo B2B en un mismo pedido. El descuento aplica al total de unidades.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo se realiza el pago? <span class="arrow">▼</span></button>
+      <div class="faq-answer">Aceptamos transferencia bancaria, tarjeta de crédito/débito y pago a través de PagoFácil. Los clientes Tier Oro tienen opción de crédito a 30 días.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Tienen stock disponible siempre? <span class="arrow">▼</span></button>
+      <div class="faq-answer">Nuestro inventario está curado y actualizado semanalmente. En el catálogo B2B puedes ver el stock en tiempo real. Para pedidos grandes recomendamos pre-acordar con el asesor.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">LUMIN<span>A</span></div>
+      <p>Plataforma de moda digital ecuatoriana con programa B2B para distribuidores y boutiques.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" title="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" title="TikTok">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+        </a>
+        <a href="https://wa.me/593983822897" target="_blank" title="WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>B2B</h4><ul><li><a href="mayoristas.html#registro">Registro</a></li><li><a href="catalogo.html">Catálogo B2B</a></li></ul></div>
+    <div class="footer-col"><h4>Empresa</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="contacto.html">Políticas B2B</a></li><li><a href="contacto.html">Logística</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Lumina Concept Store. Hecho en Ecuador.</p></div>
+</footer>
+
+<div class="wa-float">
+  <span class="wa-tooltip">Hablar con asesor B2B</span>
+  <a class="wa-btn" href="https://wa.me/593983822897?text=Hola!%20Me%20interesa%20el%20programa%20mayoristas" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+  </a>
+</div>
+<button class="chatbot-toggle" id="chatToggle">✦</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">✦</div>
+    <div class="chatbot-header-info"><h4>Luna · Asistente Lumina</h4><p>Responde en segundos</p></div>
+    <div class="chatbot-status"></div>
+  </div>
+  <div class="chatbot-body" id="chatBody"></div>
+  <div class="chatbot-footer"><input type="text" id="chatInput" placeholder="Escribe tu consulta..." /><button id="chatSend">→</button></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+  AOS.init({ once: true, offset: 80 });
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

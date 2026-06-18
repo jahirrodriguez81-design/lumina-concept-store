@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito — Lumina Concept Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      padding: calc(var(--nav-h) + 48px) 48px 80px;
+      align-items: start;
+    }
+
+    /* ── HEADER ── */
+    .cart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .cart-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px; font-weight: 800; letter-spacing: -1px;
+    }
+
+    .cart-header span { font-size: 14px; color: var(--gray); font-weight: 400; }
+
+    .btn-clear {
+      background: none; border: 1px solid var(--gray-border);
+      color: var(--gray); border-radius: 100px; padding: 8px 18px;
+      font-size: 12px; font-family: 'Syne', sans-serif; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+
+    .btn-clear:hover { border-color: #EF4444; color: #EF4444; }
+
+    /* ── CART ITEMS ── */
+    .cart-items { display: flex; flex-direction: column; gap: 16px; }
+
+    .cart-item {
+      background: var(--surface);
+      border: 1px solid var(--gray-light);
+      border-radius: 20px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 88px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      transition: border-color .2s;
+    }
+
+    .cart-item:hover { border-color: var(--gray-border); }
+
+    .cart-item-img {
+      width: 88px; height: 110px; border-radius: 12px; overflow: hidden;
+      background: var(--surface2);
+    }
+
+    .cart-item-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
+
+    .cart-item-info h4 {
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--white); margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    .cart-item-info h4:hover { color: var(--accent); }
+
+    .cart-item-meta {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+
+    .meta-tag {
+      background: var(--surface2); border: 1px solid var(--gray-border);
+      border-radius: 100px; padding: 3px 10px;
+      font-size: 11px; font-weight: 600; font-family: 'Syne', sans-serif;
+      color: var(--gray-mid); letter-spacing: .3px;
+    }
+
+    .meta-tag.color-tag { padding-left: 8px; display: flex; align-items: center; gap: 6px; }
+
+    .color-dot-sm { width: 10px; height: 10px; border-radius: 50%; }
+
+    .cart-item-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px; font-weight: 700; color: var(--white);
+    }
+
+    .cart-item-price .unit { font-size: 11px; color: var(--gray); font-weight: 400; }
+
+    /* QTY in cart */
+    .cart-qty {
+      display: flex; align-items: center; gap: 0;
+      background: var(--surface2); border: 1px solid var(--gray-border);
+      border-radius: 10px; overflow: hidden; width: fit-content;
+    }
+
+    .cqty-btn {
+      width: 34px; height: 34px; background: none; border: none;
+      color: var(--gray); font-size: 16px; font-weight: 300;
+      cursor: pointer; transition: background .2s, color .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .cqty-btn:hover { background: var(--surface3); color: var(--white); }
+    .cqty-val { width: 32px; text-align: center; font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; color: var(--white); }
+
+    /* Right side of item */
+    .cart-item-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 12px;
+    }
+
+    .btn-remove {
+      background: none; border: none; cursor: pointer;
+      color: var(--gray); font-size: 13px; transition: color .2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .btn-remove:hover { color: #EF4444; }
+
+    /* ── EMPTY STATE ── */
+    .cart-empty {
+      text-align: center; padding: 80px 48px;
+      background: var(--surface); border-radius: 20px;
+      border: 1px solid var(--gray-light);
+    }
+
+    .cart-empty svg { stroke: var(--gray); margin: 0 auto 20px; display: block; }
+    .cart-empty h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+    .cart-empty p { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+
+    /* ── SUMMARY ── */
+    .cart-summary {
+      background: var(--surface);
+      border: 1px solid var(--gray-light);
+      border-radius: 20px; padding: 28px;
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+
+    .cart-summary h2 {
+      font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+      margin-bottom: 24px; letter-spacing: -.5px;
+    }
+
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; padding: 10px 0;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .summary-row:last-of-type { border-bottom: none; }
+    .summary-row .label { color: var(--gray); }
+    .summary-row .value { font-weight: 600; color: var(--white); }
+    .summary-row .value.free { color: var(--accent); font-family: 'Syne', sans-serif; }
+
+    .summary-total {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; margin-top: 8px;
+      border-top: 2px solid var(--gray-border);
+    }
+
+    .summary-total .label {
+      font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--white);
+    }
+
+    .summary-total .value {
+      font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); letter-spacing: -1px;
+    }
+
+    .btn-checkout {
+      width: 100%; padding: 16px; background: var(--accent); color: var(--bg);
+      border: none; border-radius: 12px;
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
+      cursor: pointer; margin-top: 20px;
+      transition: transform .2s, box-shadow .2s;
+      letter-spacing: .3px;
+    }
+
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--accent-glow);
+    }
+
+    .btn-checkout-wa {
+      width: 100%; padding: 14px; background: #25D366; color: white;
+      border: none; border-radius: 12px;
+      font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; margin-top: 10px;
+      transition: transform .2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .btn-checkout-wa:hover { transform: translateY(-2px); }
+
+    .summary-note {
+      font-size: 11px; color: var(--gray); text-align: center;
+      margin-top: 14px; line-height: 1.5;
+    }
+
+    /* Promo code */
+    .promo-row {
+      display: flex; gap: 8px; margin-top: 20px;
+      border-top: 1px solid var(--gray-light); padding-top: 20px;
+    }
+
+    .promo-input {
+      flex: 1; background: var(--surface2); border: 1px solid var(--gray-border);
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 13px; color: var(--white); outline: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s;
+    }
+
+    .promo-input::placeholder { color: var(--gray); }
+    .promo-input:focus { border-color: var(--accent); }
+
+    .promo-btn {
+      background: var(--surface3); border: 1px solid var(--gray-border);
+      color: var(--gray-mid); border-radius: 10px; padding: 10px 16px;
+      font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+
+    .promo-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Suggested products */
+    .cart-suggested {
+      padding: 0 48px 80px;
+    }
+
+    .suggested-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="mainNav">
+  <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="catalogo.html">Catálogo</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="mayoristas.html">Mayoristas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="carrito.html" class="btn-cart">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Carrito <span class="cart-count">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- CART LAYOUT -->
+<div class="cart-layout">
+  <!-- ITEMS -->
+  <div>
+    <div class="cart-header">
+      <div>
+        <h1>Mi carrito</h1>
+        <span id="itemCountLabel">0 productos</span>
+      </div>
+      <button class="btn-clear" onclick="clearCart()">Vaciar carrito</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="cart-summary">
+    <h2>Resumen del pedido</h2>
+
+    <div class="summary-row">
+      <span class="label">Subtotal</span>
+      <span class="value" id="subtotalVal">$0.00</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Envío</span>
+      <span class="value free" id="shippingVal">Gratis</span>
+    </div>
+    <div class="summary-row">
+      <span class="label">Descuento</span>
+      <span class="value" id="discountVal">$0.00</span>
+    </div>
+
+    <div class="summary-total">
+      <span class="label">Total</span>
+      <span class="value" id="totalVal">$0.00</span>
+    </div>
+
+    <button class="btn-checkout" onclick="checkout()">
+      Finalizar compra →
+    </button>
+    <button class="btn-checkout-wa" onclick="checkoutWA()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+      Pedir por WhatsApp
+    </button>
+
+    <div class="promo-row">
+      <input class="promo-input" id="promoInput" type="text" placeholder="Código de descuento" />
+      <button class="promo-btn" onclick="applyPromo()">Aplicar</button>
+    </div>
+
+    <p class="summary-note">
+      Pago 100% seguro · Devolución en 30 días<br/>
+      Envío gratis en pedidos mayores a $80
+    </p>
+
+    <div class="payment-logos">
+      <div class="payment-logos-label">Métodos de pago aceptados</div>
+      <div class="payment-logo-chip">
+        <svg width="14" height="10" viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1A1F71"/><text x="5" y="17" font-family="Arial" font-weight="900" font-size="11" fill="#fff">VISA</text></svg>
+        VISA
+      </div>
+      <div class="payment-logo-chip">
+        <svg width="22" height="14" viewBox="0 0 50 30"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B"/><path d="M25 6.5a12 12 0 0 1 0 17A12 12 0 0 1 25 6.5z" fill="#FF5F00"/></svg>
+        MC
+      </div>
+      <div class="payment-logo-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#009CDE" stroke-width="2"><path d="M19 7H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+        PayPal
+      </div>
+      <div class="payment-logo-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        WhatsApp
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUGGESTED -->
+<section class="cart-suggested">
+  <div class="section-tag" style="margin-bottom:16px"><span class="dot"></span> Quizás te interese</div>
+  <h2 class="section-title mb-32">Completá tu <span style="color:var(--accent)">look</span></h2>
+  <div class="suggested-grid" id="suggestedGrid"></div>
+</section>
+
+<!-- PAYMENT MODAL -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-modal">
+    <div class="payment-modal-header">
+      <h3>Finalizar compra</h3>
+      <button class="payment-close-btn" onclick="closePaymentModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="paymentContent">
+      <div class="payment-order-summary" id="paymentSummary"></div>
+
+      <div class="payment-divider">Datos de entrega</div>
+
+      <div class="delivery-form">
+        <div class="delivery-form-grid">
+          <div class="d-field">
+            <label>Nombre completo</label>
+            <input type="text" id="d-name" placeholder="Ej. María García" />
+          </div>
+          <div class="d-field">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" id="d-phone" placeholder="+593 99 xxx xxxx" />
+          </div>
+          <div class="d-field">
+            <label>Ciudad</label>
+            <select id="d-city">
+              <option value="">Selecciona tu ciudad</option>
+              <option>Guayaquil</option>
+              <option>Quito</option>
+              <option>Cuenca</option>
+              <option>Manta</option>
+              <option>Portoviejo</option>
+              <option>Ambato</option>
+              <option>Loja</option>
+              <option>Machala</option>
+              <option>Esmeraldas</option>
+              <option>Otra ciudad</option>
+            </select>
+          </div>
+          <div class="d-field">
+            <label>Código postal (opcional)</label>
+            <input type="text" id="d-zip" placeholder="Ej. 090101" />
+          </div>
+          <div class="d-field full">
+            <label>Dirección de entrega</label>
+            <textarea id="d-address" placeholder="Calle, número, referencia..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-divider">Elige tu método de pago</div>
+
+      <div class="payment-methods">
+        <button class="payment-method-btn active" id="methodPaypal" onclick="selectMethod('paypal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          PayPal / Tarjeta
+        </button>
+        <button class="payment-method-btn" id="methodWA" onclick="selectMethod('wa')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+          WhatsApp
+        </button>
+      </div>
+
+      <div id="paypal-container"></div>
+
+      <p class="payment-secure-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Pago 100% seguro · SSL · No guardamos datos de tarjeta
+      </p>
+    </div>
+
+    <div class="payment-success" id="paymentSuccess">
+      <div class="payment-success-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h4>¡Pago completado!</h4>
+      <p>Tu pedido ha sido procesado. Recibirás confirmación por correo electrónico.</p>
+      <a href="catalogo.html" class="btn btn-accent" style="margin-top:20px;display:inline-flex">Seguir comprando</a>
+    </div>
+  </div>
+</div>
+
+<div class="wa-float">
+  <span class="wa-tooltip">¿Dudas con tu pedido?</span>
+  <a class="wa-btn" href="https://wa.me/593983822897?text=Hola!%20Tengo%20dudas%20con%20mi%20pedido" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+  </a>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+const glow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+
+let promoDiscount = 0;
+let activePromoCode = '';
+
+// ── Validación del formulario de entrega ─────────────────
+function validateDelivery() {
+  const name    = document.getElementById('d-name')?.value.trim()  || '';
+  const phone   = document.getElementById('d-phone')?.value.trim() || '';
+  const city    = document.getElementById('d-city')?.value         || '';
+  const address = document.getElementById('d-address')?.value.trim()|| '';
+
+  if (!name || name.length < 3)
+    return 'Ingresa tu nombre completo (mínimo 3 caracteres).';
+  if (!phone || !/^\+?[\d\s\-]{7,15}$/.test(phone))
+    return 'Ingresa un número de teléfono válido.';
+  if (!city)
+    return 'Selecciona tu ciudad de entrega.';
+  if (!address || address.length < 10)
+    return 'Ingresa tu dirección completa (mínimo 10 caracteres).';
+  return null; // sin errores
+}
+
+// ── Obtiene el total real desde el servidor ──────────────
+async function fetchServerQuote() {
+  const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  const payload = {
+    items: items.map(i => ({ id: i.productId, qty: i.qty || 1 })),
+    promoCode: activePromoCode || null,
+  };
+  const res  = await fetch('/api/quote', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error('No se pudo verificar el total con el servidor');
+  return res.json(); // { subtotal, shipping, discount, total }
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getColorHex(colorName, productId) {
+  const p = getProduct(productId);
+  if (!p) return '#888';
+  const c = p.colors.find(c => c.name === colorName);
+  return c ? c.hex : '#888';
+}
+
+function renderCart() {
+  const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  const container = document.getElementById('cartItems');
+  const countLabel = document.getElementById('itemCountLabel');
+
+  const totalQty = items.reduce((s, i) => s + (i.qty || 1), 0);
+  countLabel.textContent = `${totalQty} producto${totalQty !== 1 ? 's' : ''}`;
+  document.querySelectorAll('.cart-count').forEach(el => el.textContent = totalQty);
+
+  const checkoutBtn = document.querySelector('.btn-checkout');
+  const waBtn = document.querySelector('.btn-checkout-wa');
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div class="cart-empty">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <h3>Tu carrito está vacío</h3>
+        <p>Agrega productos desde el catálogo para comenzar tu pedido.</p>
+        <a href="catalogo.html" class="btn btn-accent">Ver catálogo →</a>
+      </div>`;
+    updateSummary(0);
+    if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.style.opacity = '.4'; checkoutBtn.style.cursor = 'not-allowed'; checkoutBtn.style.transform = 'none'; }
+    if (waBtn) { waBtn.disabled = true; waBtn.style.opacity = '.4'; waBtn.style.cursor = 'not-allowed'; }
+    return;
+  }
+
+  if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.style.opacity = ''; checkoutBtn.style.cursor = ''; checkoutBtn.style.transform = ''; }
+  if (waBtn) { waBtn.disabled = false; waBtn.style.opacity = ''; waBtn.style.cursor = ''; }
+
+  container.innerHTML = items.map(item => {
+    const colorHex = item.color ? getColorHex(item.color, item.productId) : '';
+    const itemTotal = (item.price * (item.qty || 1)).toFixed(2);
+    return `
+    <div class="cart-item" data-cart-id="${item.id}">
+      <div class="cart-item-img">
+        ${item.img
+          ? `<img src="${escHtml(item.img)}" alt="${escHtml(item.name)}" loading="lazy" />`
+          : `<div style="width:100%;height:100%;background:var(--surface3);border-radius:12px"></div>`
+        }
+      </div>
+      <div class="cart-item-info">
+        <h4 onclick="window.location.href='producto.html?id=${escHtml(String(item.productId))}'">
+          ${escHtml(item.name)}
+        </h4>
+        <div class="cart-item-meta">
+          ${item.size ? `<span class="meta-tag">Talla: ${escHtml(item.size)}</span>` : ''}
+          ${item.color ? `
+            <span class="meta-tag color-tag">
+              <div class="color-dot-sm" style="background:${escHtml(colorHex)}"></div>
+              ${escHtml(item.color)}
+            </span>` : ''}
+          <span class="meta-tag">$${item.price.toFixed(2)} c/u</span>
+        </div>
+        <div class="cart-qty">
+          <button class="cqty-btn" onclick="updateQty('${escHtml(String(item.id))}', -1)">−</button>
+          <span class="cqty-val">${item.qty || 1}</span>
+          <button class="cqty-btn" onclick="updateQty('${escHtml(String(item.id))}', 1)">+</button>
+        </div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price">
+          $${itemTotal}
+          <div class="unit">${item.qty > 1 ? `${item.qty} uds.` : ''}</div>
+        </div>
+        <button class="btn-remove" onclick="removeItem('${escHtml(String(item.id))}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Eliminar
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+  updateSummary(subtotal);
+}
+
+function updateSummary(subtotal) {
+  const shipping = subtotal >= 80 || subtotal === 0 ? 0 : 4.99;
+  const discount = promoDiscount > 0 ? subtotal * promoDiscount : 0;
+  const total = subtotal + shipping - discount;
+
+  document.getElementById('subtotalVal').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('shippingVal').textContent = shipping === 0 ? 'Gratis' : `$${shipping.toFixed(2)}`;
+  document.getElementById('shippingVal').className = `value ${shipping === 0 ? 'free' : ''}`;
+  document.getElementById('discountVal').textContent = `-$${discount.toFixed(2)}`;
+  document.getElementById('totalVal').textContent = `$${total.toFixed(2)}`;
+}
+
+function updateQty(itemId, delta) {
+  let items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  const item = items.find(i => i.id == itemId);
+  if (!item) return;
+  item.qty = Math.max(1, Math.min(10, (item.qty || 1) + delta));
+  localStorage.setItem('lumina_cart', JSON.stringify(items));
+  renderCart();
+}
+
+function removeItem(itemId) {
+  let items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  items = items.filter(i => i.id != itemId);
+  localStorage.setItem('lumina_cart', JSON.stringify(items));
+  renderCart();
+  showToast('Producto eliminado del carrito');
+}
+
+function clearCart() {
+  localStorage.setItem('lumina_cart', '[]');
+  renderCart();
+  showToast('Carrito vaciado');
+}
+
+// Valida el código contra el servidor — los códigos ya no están en el frontend
+async function applyPromo() {
+  const code = document.getElementById('promoInput').value.trim();
+  if (!code) return;
+
+  try {
+    const res = await fetch('/api/apply-promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Código no válido'); return; }
+
+    promoDiscount = data.discount;
+    activePromoCode = code.trim().toUpperCase();
+    showToast(data.message);
+    const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+    const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+    updateSummary(subtotal);
+  } catch {
+    showToast('Error al verificar el código');
+  }
+}
+
+let paypalLoaded = false;
+let paypalRendered = false;
+let currentMethod = 'paypal';
+
+// Total local solo para la vista previa del carrito — el monto real
+// siempre viene del servidor al abrir el modal o hacer checkout WA.
+function getCartDisplayTotal() {
+  const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  const subtotal = items.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+  const shipping = subtotal >= 80 || subtotal === 0 ? 0 : 4.99;
+  const discount = promoDiscount > 0 ? subtotal * promoDiscount : 0;
+  return { subtotal, shipping, discount, total: subtotal + shipping - discount, items };
+}
+
+// Carga la SDK de PayPal usando el Client ID que devuelve el servidor
+async function loadPayPalSDK() {
+  if (paypalLoaded) return;
+  const res = await fetch('/api/config');
+  const { paypalClientId } = await res.json();
+  await new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(paypalClientId)}&currency=USD&components=buttons`;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
+    document.head.appendChild(script);
+  });
+  paypalLoaded = true;
+}
+
+function renderPayPalButtons() {
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+
+    // El monto lo calcula el servidor con precios reales
+    createOrder: async function() {
+      const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+      const payload = {
+        items: items.map(i => ({ id: i.productId, qty: i.qty || 1 })),
+        promoCode: activePromoCode || null,
+      };
+      const res = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al crear la orden');
+      return data.orderID;
+    },
+
+    // El servidor captura y verifica el pago antes de confirmar
+    onApprove: async function(data) {
+      const res = await fetch('/api/capture-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderID: data.orderID }),
+      });
+      const result = await res.json();
+      if (!res.ok) { showToast(result.error || 'Error al confirmar el pago'); return; }
+
+      const orderNum = 'LCS-' + Date.now().toString().slice(-6);
+      const d = getDeliveryData();
+      const successEl = document.getElementById('paymentSuccess');
+      successEl.innerHTML = `
+        <div class="payment-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4>¡Pago completado!</h4>
+        <div class="order-number"># ${escHtml(orderNum)}</div>
+        <p>Tu pedido fue procesado con éxito.${d.name ? ' Hola, <strong>'+escHtml(d.name)+'</strong>!' : ''}<br/>
+        ${d.city ? 'Envío a <strong>'+escHtml(d.city)+'</strong> en 2-4 días hábiles.' : 'Recibirás confirmación pronto.'}</p>
+        <div style="display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:wrap">
+          <a href="mailto:?subject=Pedido Lumina ${escHtml(orderNum)}&body=Tu pedido ${escHtml(orderNum)} fue confirmado." class="btn btn-outline btn-sm">Enviar confirmación</a>
+          <a href="catalogo.html" class="btn btn-accent btn-sm">Seguir comprando</a>
+        </div>`;
+      document.getElementById('paymentContent').style.display = 'none';
+      successEl.classList.add('show');
+      localStorage.setItem('lumina_cart', '[]');
+      setTimeout(renderCart, 500);
+    },
+
+    onError: function(err) {
+      showToast('Error en el pago. Inténtalo de nuevo.');
+      console.error(err);
+    }
+  }).render('#paypal-container');
+}
+
+async function openPaymentModal() {
+  const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  if (!items.length) { showToast('Tu carrito está vacío'); return; }
+
+  // Validar formulario antes de iniciar el pago
+  const formError = validateDelivery();
+  if (formError) { showToast(formError); return; }
+
+  const overlay = document.getElementById('paymentOverlay');
+  const summary = document.getElementById('paymentSummary');
+
+  // Mostrar spinner mientras se consulta al servidor
+  summary.innerHTML = `<div style="text-align:center;padding:12px;color:var(--gray);font-size:13px">Verificando total...</div>`;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  let serverTotal;
+  try {
+    // El total mostrado en el modal es el calculado por el servidor,
+    // no el que viene del localStorage (que el cliente podría haber modificado).
+    serverTotal = await fetchServerQuote();
+  } catch (err) {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    showToast('Error al verificar precios. Recarga la página.');
+    return;
+  }
+
+  const { subtotal, shipping, discount, total } = serverTotal;
+  const totalQty = items.reduce((s, i) => s + (i.qty || 1), 0);
+
+  summary.innerHTML = `
+    <div class="payment-order-row"><span>Subtotal (${totalQty} producto${totalQty !== 1 ? 's' : ''})</span><span>$${subtotal.toFixed(2)}</span></div>
+    ${discount > 0 ? `<div class="payment-order-row"><span>Descuento</span><span style="color:var(--accent)">-$${discount.toFixed(2)}</span></div>` : ''}
+    <div class="payment-order-row"><span>Envío</span><span style="color:var(--accent)">${shipping === 0 ? 'Gratis' : '$' + shipping.toFixed(2)}</span></div>
+    <div class="payment-order-total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+  `;
+
+  if (!paypalRendered) {
+    paypalRendered = true;
+    try {
+      await loadPayPalSDK();
+      renderPayPalButtons();
+    } catch (err) {
+      console.error(err);
+      showToast('No se pudo cargar el método de pago. Recarga la página.');
+      paypalRendered = false;
+    }
+  }
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectMethod(method) {
+  currentMethod = method;
+  document.getElementById('methodPaypal').classList.toggle('active', method === 'paypal');
+  document.getElementById('methodWA').classList.toggle('active', method === 'wa');
+  document.getElementById('paypal-container').style.display = method === 'paypal' ? '' : 'none';
+  if (method === 'wa') {
+    closePaymentModal();
+    checkoutWA();
+  }
+}
+
+function checkout() {
+  openPaymentModal();
+}
+
+function getDeliveryData() {
+  return {
+    name:    document.getElementById('d-name')?.value.trim()    || '',
+    phone:   document.getElementById('d-phone')?.value.trim()   || '',
+    city:    document.getElementById('d-city')?.value           || '',
+    address: document.getElementById('d-address')?.value.trim() || '',
+  };
+}
+
+async function checkoutWA() {
+  const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+  if (!items.length) { showToast('Tu carrito está vacío'); return; }
+
+  let serverTotal;
+  try {
+    // El total del mensaje de WA viene del servidor para que el vendedor
+    // reciba el precio correcto y no el que el cliente podría haber modificado.
+    serverTotal = await fetchServerQuote();
+  } catch {
+    showToast('Error al verificar precios. Inténtalo de nuevo.');
+    return;
+  }
+
+  const { subtotal, shipping, discount, total } = serverTotal;
+  const d = getDeliveryData();
+
+  let msg = 'Hola! Quiero hacer un pedido en Lumina:\n\n';
+  msg += '🛍 *PRODUCTOS:*\n';
+  items.forEach(i => {
+    msg += `• ${i.name}`;
+    if (i.size)  msg += ` | Talla: ${i.size}`;
+    if (i.color) msg += ` | Color: ${i.color}`;
+    msg += ` | Cant: ${i.qty || 1}\n`;
+  });
+  msg += `\nSubtotal: $${subtotal.toFixed(2)}`;
+  if (discount > 0) msg += `\nDescuento: -$${discount.toFixed(2)}`;
+  msg += `\nEnvío: ${shipping === 0 ? 'Gratis' : '$' + shipping.toFixed(2)}`;
+  msg += `\n*TOTAL VERIFICADO: $${total.toFixed(2)}*`;
+  if (d.name || d.city || d.address) {
+    msg += '\n\n📦 *DATOS DE ENTREGA:*\n';
+    if (d.name)    msg += `Nombre: ${d.name}\n`;
+    if (d.phone)   msg += `Teléfono: ${d.phone}\n`;
+    if (d.city)    msg += `Ciudad: ${d.city}\n`;
+    if (d.address) msg += `Dirección: ${d.address}\n`;
+  }
+
+  window.open(`https://wa.me/593983822897?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function renderSuggested() {
+  const cartIds = new Set(JSON.parse(localStorage.getItem('lumina_cart')||'[]').map(i=>i.productId));
+  const suggestions = LUMINA_PRODUCTS.filter(p => !cartIds.has(p.id)).slice(0, 4);
+  document.getElementById('suggestedGrid').innerHTML = suggestions.map(p => `
+    <div class="product-card" data-id="${p.id}" style="cursor:pointer" onclick="window.location.href='producto.html?id=${p.id}'">
+      <div class="product-image">
+        <img src="${p.img}" alt="${escHtml(p.name)}" loading="lazy" />
+        ${p.badge ? `<span class="product-badge ${p.badge.includes('-')?'sale':''}">${escHtml(p.badge)}</span>` : ''}
+        <button class="product-wishlist" onclick="event.stopPropagation()">♡</button>
+        <button class="product-quick-add" onclick="event.stopPropagation();addToCart(${p.id},'${escHtml(p.name)}',${p.price},'${p.img}','','');renderCart();renderSuggested()">+ Agregar</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">${escHtml(p.category)} · ${escHtml(p.sub)}</div>
+        <div class="product-name">${escHtml(p.name)}</div>
+        <div class="product-footer">
+          <div class="product-price">$${p.price.toFixed(2)} ${p.oldPrice?`<span class="old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
+          <div class="color-dots">${p.colors.slice(0,3).map(c=>`<div class="color-dot" style="background:${escHtml(c.hex)}"></div>`).join('')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// Init
+renderCart();
+renderSuggested();
+
+function showToast(msg) {
+  const t = document.getElementById('toastEl');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

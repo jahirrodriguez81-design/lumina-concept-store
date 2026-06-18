@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina Concept Store — Moda Digital Ecuador</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+
+  <!-- AOS – Animate On Scroll (CDN) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ══ HERO ══ */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+      padding-top: var(--nav-h);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 64px 80px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(196,255,0,.2);
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 32px; width: fit-content;
+    }
+
+    .hero-eyebrow .pulse {
+      width: 7px; height: 7px;
+      background: var(--accent); border-radius: 50%;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%,100% { transform: scale(1); box-shadow: none; }
+      50% { transform: scale(1.5); box-shadow: 0 0 8px var(--accent); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(52px, 6vw, 88px);
+      font-weight: 800;
+      letter-spacing: -4px;
+      line-height: 0.92;
+      margin-bottom: 28px;
+    }
+
+    .hero-title .outline {
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+
+    .hero-title .accent { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 380px;
+      margin-bottom: 44px;
+    }
+
+    .hero-cta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-light);
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 30px; font-weight: 800; letter-spacing: -1px;
+    }
+
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--gray); margin-top: 3px; letter-spacing: .3px; }
+
+    /* HERO RIGHT — image collage */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .55;
+    }
+
+    .hero-bg-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, transparent 60%);
+      z-index: 1;
+    }
+
+    /* CSS animated gradient fallback if no video */
+    .hero-bg-anim {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #111 0%, #1e1e2e 40%, #0a1a0a 100%);
+      z-index: 0;
+    }
+
+    @keyframes gradShift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    .hero-img-collage {
+      position: absolute; inset: 0;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+    }
+
+    .hero-tile {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-tile img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 8s ease;
+      filter: brightness(.75) saturate(.8);
+    }
+
+    .hero-tile:hover img { transform: scale(1.05); filter: brightness(.9) saturate(1); }
+
+    .hero-tile-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.1);
+      transition: background .3s;
+    }
+
+    /* floating accent card */
+    .hero-accent-card {
+      position: absolute;
+      bottom: 36px; right: 36px;
+      z-index: 10;
+      background: var(--accent);
+      border-radius: 20px;
+      padding: 20px 24px;
+      color: var(--bg);
+    }
+
+    .hero-accent-card .big { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; line-height: 1; }
+    .hero-accent-card .label { font-size: 12px; font-weight: 600; margin-top: 4px; opacity: .7; }
+
+    .hero-top-badge {
+      position: absolute;
+      top: 28px; left: 28px;
+      z-index: 10;
+      background: rgba(8,8,8,.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--gray-border);
+      border-radius: 100px;
+      padding: 10px 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 600; color: var(--white);
+    }
+
+    .hero-top-badge .dot-live {
+      width: 8px; height: 8px;
+      background: var(--accent); border-radius: 50%;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    /* ══ MARQUEE ══ */
+    .marquee-section { padding: 0; }
+
+    /* ══ STATS BANNER ══ */
+    .stats-banner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--surface);
+      border-top: 1px solid var(--gray-light);
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .stat-cell {
+      padding: 40px 48px;
+      border-right: 1px solid var(--gray-light);
+    }
+
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-cell .number {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px; font-weight: 800;
+      letter-spacing: -2px; line-height: 1;
+      color: var(--white);
+    }
+
+    .stat-cell .number span { color: var(--accent); }
+
+    .stat-cell .desc {
+      font-size: 13px; color: var(--gray); margin-top: 6px;
+    }
+
+    /* ══ ABOUT ══ */
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 600px;
+    }
+
+    .about-left {
+      padding: 80px 64px 80px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-left .big-text {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .about-left .big-text em { font-style: normal; color: var(--accent); }
+
+    .about-left p {
+      font-size: 15px; color: var(--gray); line-height: 1.8;
+      margin-bottom: 16px; max-width: 440px;
+    }
+
+    .about-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .about-tile {
+      overflow: hidden; position: relative;
+    }
+
+    .about-tile img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s;
+      filter: brightness(.8);
+    }
+
+    .about-tile:hover img { transform: scale(1.06); filter: brightness(.95); }
+
+    .about-tile-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 16px;
+      background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ══ SERVICES ══ */
+    .services-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .service-list { display: flex; flex-direction: column; gap: 0; }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--gray-light);
+      cursor: pointer;
+      transition: border-color .3s;
+    }
+
+    .service-item:last-child { border-bottom: none; }
+    .service-item:hover { border-color: var(--accent); }
+
+    .service-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700;
+      color: var(--accent); opacity: .6; min-width: 28px;
+    }
+
+    .service-info { flex: 1; }
+    .service-info h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; transition: color .3s; }
+    .service-item:hover .service-info h4 { color: var(--accent); }
+    .service-info p { font-size: 13px; color: var(--gray); line-height: 1.5; }
+
+    .service-arrow {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gray-border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: var(--gray);
+      transition: all .3s;
+    }
+
+    .service-item:hover .service-arrow {
+      background: var(--accent); border-color: var(--accent); color: var(--bg);
+    }
+
+    .services-visual {
+      position: relative;
+      height: 600px; border-radius: 24px; overflow: hidden;
+    }
+
+    .services-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.8) saturate(.85);
+    }
+
+    .services-visual-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(8,8,8,.8));
+    }
+
+    .services-badge {
+      position: absolute; bottom: 32px; left: 32px;
+      background: var(--accent); border-radius: 16px;
+      padding: 16px 24px; color: var(--bg);
+    }
+
+    .services-badge .title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: .5px; }
+    .services-badge .sub { font-size: 12px; font-weight: 500; opacity: .65; margin-top: 3px; }
+
+    /* ══ VIDEO SECTION ══ */
+    .video-section {
+      position: relative;
+      height: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.35) saturate(.6);
+    }
+
+    .video-bg-fallback {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0a1a0a 0%, #111 50%, #1a1a0a 100%);
+    }
+
+    .video-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.45);
+    }
+
+    .video-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 48px;
+    }
+
+    .video-content h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 800; letter-spacing: -3px;
+      line-height: 1; margin-bottom: 24px;
+    }
+
+    .video-content h2 .outline {
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+
+    .video-content h2 .accent { color: var(--accent); }
+
+    .video-content p {
+      font-size: 16px; color: rgba(255,255,255,.65);
+      max-width: 480px; margin: 0 auto 36px; line-height: 1.7;
+    }
+
+    .play-btn {
+      width: 72px; height: 72px;
+      background: var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: var(--bg);
+      cursor: pointer; margin: 0 auto 32px;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+      box-shadow: 0 0 40px rgba(196,255,0,.3);
+    }
+
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 60px rgba(196,255,0,.5); }
+
+    /* ══ PRODUCTS ══ */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    /* ══ SOCIAL ══ */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px; border-radius: 20px; overflow: hidden;
+    }
+
+    .social-tile {
+      aspect-ratio: 1; overflow: hidden; position: relative; cursor: pointer;
+    }
+
+    .social-tile img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s, filter .5s;
+      filter: brightness(.8) saturate(.7);
+    }
+
+    .social-tile:hover img { transform: scale(1.08); filter: brightness(1) saturate(1); }
+
+    .social-tile::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(196,255,0,.12);
+      opacity: 0; transition: opacity .3s;
+    }
+
+    .social-tile:hover::after { opacity: 1; }
+
+    /* ══ NEWSLETTER ══ */
+    .newsletter {
+      background: var(--accent);
+      border-radius: 28px;
+      margin: 0 48px;
+      padding: 72px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: 'LUMINA';
+      position: absolute;
+      right: -20px; top: 50%; transform: translateY(-50%);
+      font-family: 'Syne', sans-serif;
+      font-size: 200px; font-weight: 800; letter-spacing: -8px;
+      color: rgba(0,0,0,.06); white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .newsletter h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 800; letter-spacing: -2px;
+      line-height: 1.05; color: var(--bg);
+    }
+
+    .newsletter p { font-size: 15px; color: rgba(0,0,0,.55); margin-top: 12px; line-height: 1.6; }
+
+    .newsletter-form {
+      display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1;
+    }
+
+    .newsletter-form input {
+      background: rgba(0,0,0,.12);
+      border: 1.5px solid rgba(0,0,0,.15);
+      border-radius: 100px; padding: 16px 22px;
+      font-size: 15px; color: var(--bg); outline: none;
+      transition: border-color .2s;
+    }
+
+    .newsletter-form input::placeholder { color: rgba(0,0,0,.4); }
+    .newsletter-form input:focus { border-color: rgba(0,0,0,.4); }
+
+    .newsletter-form button {
+      background: var(--bg); color: var(--accent);
+      border: none; border-radius: 100px; padding: 16px 32px;
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: transform .2s;
+      letter-spacing: .5px;
+    }
+
+    .newsletter-form button:hover { transform: translateY(-2px); }
+
+    /* ══ CURSOR GLOW ══ */
+    .cursor-glow {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(196,255,0,.04) 0%, transparent 70%);
+      border-radius: 50%;
+      position: fixed; pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1000; transition: 0.1s;
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR GLOW -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Inicio</a></li>
+    <li><a href="catalogo.html">Catálogo</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="mayoristas.html">Mayoristas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-search" onclick="openSearch()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+    <a href="carrito.html" class="btn-cart">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Carrito <span class="cart-count">0</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left" data-aos="fade-right" data-aos-duration="900">
+    <div class="hero-eyebrow"><span class="pulse"></span> Nueva colección 2024</div>
+    <h1 class="hero-title">
+      MODA<br/>
+      <span class="outline">QUE TE</span><br/>
+      <span class="accent">ILUMINA.</span>
+    </h1>
+    <p class="hero-desc">
+      Curaduría de inventario, asesoría de imagen personalizada y entrega garantizada en Ecuador.
+      Moda digital que va contigo.
+    </p>
+    <div class="hero-cta">
+      <a href="catalogo.html" class="btn btn-accent btn-lg">Explorar colección →</a>
+      <a href="nosotros.html" class="btn btn-outline btn-lg">Nuestra historia</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Clientes felices</div>
+      </div>
+      <div>
+        <div class="stat-num">120<span>+</span></div>
+        <div class="stat-label">Prendas curadas</div>
+      </div>
+      <div>
+        <div class="stat-num">48<span>h</span></div>
+        <div class="stat-label">Soporte postventa</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-bg-anim"></div>
+    <div class="hero-img-collage" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+      <div class="hero-tile">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
+        <div class="hero-tile-overlay"></div>
+      </div>
+      <div class="hero-tile">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&auto=format&fit=crop&q=80" alt="Style" loading="lazy" />
+        <div class="hero-tile-overlay"></div>
+      </div>
+      <div class="hero-tile">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&auto=format&fit=crop&q=80" alt="Model" loading="lazy" />
+        <div class="hero-tile-overlay"></div>
+      </div>
+      <div class="hero-tile">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=700&auto=format&fit=crop&q=80" alt="Clothing" loading="lazy" />
+        <div class="hero-tile-overlay"></div>
+      </div>
+    </div>
+
+    <div class="hero-top-badge">
+      <span class="dot-live"></span>
+      Tienda online abierta · 24/7
+    </div>
+
+    <div class="hero-accent-card" data-aos="fade-up" data-aos-delay="600">
+      <div class="big">2024</div>
+      <div class="label">Nueva temporada</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MARQUEE 1 ══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">NUEVA COLECCIÓN <span class="sep">✦</span> LUMINA CONCEPT STORE <span class="sep">✦</span> MODA DIGITAL <span class="sep">✦</span> ECUADOR <span class="sep">✦</span> ASESORÍA DE IMAGEN <span class="sep">✦</span> CURADURÍA DE INVENTARIO <span class="sep">✦</span></div>
+    <div class="marquee-item">NUEVA COLECCIÓN <span class="sep">✦</span> LUMINA CONCEPT STORE <span class="sep">✦</span> MODA DIGITAL <span class="sep">✦</span> ECUADOR <span class="sep">✦</span> ASESORÍA DE IMAGEN <span class="sep">✦</span> CURADURÍA DE INVENTARIO <span class="sep">✦</span></div>
+  </div>
+</div>
+
+<!-- ══ STATS ══ -->
+<div class="stats-banner">
+  <div class="stat-cell" data-aos="fade-up" data-aos-delay="0">
+    <div class="number">500<span>+</span></div>
+    <div class="desc">Clientes satisfechos</div>
+  </div>
+  <div class="stat-cell" data-aos="fade-up" data-aos-delay="100">
+    <div class="number">120<span>+</span></div>
+    <div class="desc">Prendas en catálogo</div>
+  </div>
+  <div class="stat-cell" data-aos="fade-up" data-aos-delay="200">
+    <div class="number">48<span>h</span></div>
+    <div class="desc">Soporte garantizado</div>
+  </div>
+  <div class="stat-cell" data-aos="fade-up" data-aos-delay="300">
+    <div class="number">100<span>%</span></div>
+    <div class="desc">Moda ecuatoriana digital</div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div class="about-section">
+  <div class="about-left" data-aos="fade-right" data-aos-duration="900">
+    <div class="section-tag"><span class="dot"></span> Quiénes somos</div>
+    <h2 class="big-text">
+      Transformando<br/>
+      ideas en<br/>
+      <em>estilos reales.</em>
+    </h2>
+    <p>
+      Lumina Concept Store nació para resolver un problema real en el e-commerce de moda ecuatoriano:
+      la falta de asesoría, la incertidumbre con las tallas y la desconexión postventa.
+    </p>
+    <p>
+      Combinamos tecnología, curaduría editorial e inteligencia humana para que cada compra
+      sea una experiencia, no solo una transacción.
+    </p>
+    <div style="margin-top:36px; display:flex; gap:12px; flex-wrap:wrap">
+      <a href="nosotros.html" class="btn btn-accent">Ver nuestra historia</a>
+      <a href="catalogo.html" class="btn btn-outline">Explorar catálogo</a>
+    </div>
+  </div>
+
+  <div class="about-right" data-aos="fade-left" data-aos-duration="900">
+    <div class="about-tile">
+      <img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=600&auto=format&fit=crop&q=80" alt="Shopping" loading="lazy" />
+      <div class="about-tile-label">Estilo propio</div>
+    </div>
+    <div class="about-tile">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
+      <div class="about-tile-label">Curaduría</div>
+    </div>
+    <div class="about-tile">
+      <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&auto=format&fit=crop&q=80" alt="Store" loading="lazy" />
+      <div class="about-tile-label">Selección</div>
+    </div>
+    <div class="about-tile">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&auto=format&fit=crop&q=80" alt="Look" loading="lazy" />
+      <div class="about-tile-label">Tu look</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MARQUEE 2 (inverted) ══ -->
+<div class="marquee-wrap inverted">
+  <div class="marquee-track" style="animation-direction:reverse">
+    <div class="marquee-item">B2C · B2B · MAYORISTAS <span class="sep">★</span> CHATBOT 24/7 <span class="sep">★</span> ASESORÍA DE IMAGEN <span class="sep">★</span> UNBOXING PERSONALIZADO <span class="sep">★</span> POSTVENTA 48H <span class="sep">★</span></div>
+    <div class="marquee-item">B2C · B2B · MAYORISTAS <span class="sep">★</span> CHATBOT 24/7 <span class="sep">★</span> ASESORÍA DE IMAGEN <span class="sep">★</span> UNBOXING PERSONALIZADO <span class="sep">★</span> POSTVENTA 48H <span class="sep">★</span></div>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section class="section">
+  <div class="services-section">
+    <div>
+      <div class="section-tag" data-aos="fade-right"><span class="dot"></span> Lo que ofrecemos</div>
+      <h2 class="section-title mt-16 mb-32" data-aos="fade-right" data-aos-delay="100">
+        Nuestros<br/><em>servicios</em>
+      </h2>
+      <p style="color:var(--gray);font-size:15px;line-height:1.7;max-width:400px;margin-bottom:40px" data-aos="fade-right" data-aos-delay="150">
+        Una plataforma multicanal diseñada para que comprar moda sea tan fácil como elegirla.
+      </p>
+
+      <div class="service-list" data-aos="fade-right" data-aos-delay="200">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <div class="service-info">
+            <h4>Catálogo curado</h4>
+            <p>Más de 120 prendas y accesorios seleccionados con criterio editorial.</p>
+          </div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <div class="service-info">
+            <h4>Asesoría de imagen</h4>
+            <p>Estilistas digitales que te ayudan a encontrar tu look ideal.</p>
+          </div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <div class="service-info">
+            <h4>Chatbot Luna 24/7</h4>
+            <p>Atención inmediata con escalamiento a agente humano cuando lo necesitas.</p>
+          </div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <span class="service-num">04</span>
+          <div class="service-info">
+            <h4>Programa mayoristas B2B</h4>
+            <p>Precios especiales, facturación formal y soporte dedicado para tu negocio.</p>
+          </div>
+          <div class="service-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-visual" data-aos="fade-left" data-aos-duration="1000">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&auto=format&fit=crop&q=80" alt="Fashion service" />
+      <div class="services-visual-overlay"></div>
+      <div class="services-badge">
+        <div class="title">Moda inteligente</div>
+        <div class="sub">Tecnología + Estilo humano</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRODUCTS ══ -->
+<section class="section" style="padding-top:0">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px">
+    <div data-aos="fade-right">
+      <div class="section-tag"><span class="dot"></span> Destacados</div>
+      <h2 class="section-title mt-16">Colección <em>2024</em></h2>
+    </div>
+    <div data-aos="fade-left">
+      <div class="filter-tabs" style="margin-bottom:8px">
+        <button class="filter-tab active" data-filter="all">Todo</button>
+        <button class="filter-tab" data-filter="mujer">Mujer</button>
+        <button class="filter-tab" data-filter="hombre">Hombre</button>
+        <button class="filter-tab" data-filter="accesorios">Accesorios</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="products-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="product-card" data-category="mujer" data-id="1">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80" alt="Vestido" loading="lazy" />
+        <span class="product-badge">Nuevo</span>
+        <button class="product-wishlist">♡</button>
+        <button class="product-quick-add">+ Agregar al carrito</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Mujer · Vestidos</div>
+        <div class="product-name">Vestido Lumina Floral</div>
+        <div class="product-footer">
+          <div class="product-price">$68.00</div>
+          <div class="color-dots">
+            <div class="color-dot" style="background:#9b59b6"></div>
+            <div class="color-dot" style="background:#e74c3c"></div>
+            <div class="color-dot" style="background:#111"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="hombre" data-id="2">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=80" alt="Abrigo" loading="lazy" />
+        <span class="product-badge sale">-25%</span>
+        <button class="product-wishlist">♡</button>
+        <button class="product-quick-add">+ Agregar al carrito</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Hombre · Abrigos</div>
+        <div class="product-name">Abrigo Oslo Premium</div>
+        <div class="product-footer">
+          <div class="product-price">$89.00 <span class="old">$120.00</span></div>
+          <div class="color-dots">
+            <div class="color-dot" style="background:#2c3e50"></div>
+            <div class="color-dot" style="background:#7f8c8d"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="mujer" data-id="3">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&auto=format&fit=crop&q=80" alt="Look Editora Urban" loading="lazy" />
+        <button class="product-wishlist">♡</button>
+        <button class="product-quick-add">+ Agregar al carrito</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Mujer · Casual</div>
+        <div class="product-name">Look Editora Urban</div>
+        <div class="product-footer">
+          <div class="product-price">$54.00</div>
+          <div class="color-dots">
+            <div class="color-dot" style="background:#111111"></div>
+            <div class="color-dot" style="background:#f5f5f5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="accesorios" data-id="4">
+      <div class="product-image">
+        <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&auto=format&fit=crop&q=80" alt="Kit Accesorios Dorados" loading="lazy" />
+        <span class="product-badge">Top venta</span>
+        <button class="product-wishlist">♡</button>
+        <button class="product-quick-add">+ Agregar al carrito</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Accesorios</div>
+        <div class="product-name">Kit Accesorios Dorados</div>
+        <div class="product-footer">
+          <div class="product-price">$42.00</div>
+          <div class="color-dots">
+            <div class="color-dot" style="background:#c9a84c"></div>
+            <div class="color-dot" style="background:#111111"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:48px" data-aos="fade-up">
+    <a href="catalogo.html" class="btn btn-outline btn-lg">Ver todo el catálogo → (120+ productos)</a>
+  </div>
+</section>
+
+<!-- ══ VIDEO SECTION ══ -->
+<div class="video-section">
+  <div class="video-bg-fallback"></div>
+  <!-- Reemplaza el src con tu URL de video cuando tengas uno -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="" type="video/mp4" />
+  </video>
+  <img
+    src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=1600&auto=format&fit=crop&q=80"
+    alt="Fashion background"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.3) saturate(.5);"
+  />
+  <div class="video-overlay"></div>
+  <div class="video-content" data-aos="zoom-in" data-aos-duration="800">
+    <button class="play-btn" onclick="showToast('Video próximamente')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#080808"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </button>
+    <h2>
+      DISEÑA<br/>
+      <span class="outline">TU PROPIO</span><br/>
+      <span class="accent">ESTILO.</span>
+    </h2>
+    <p>Con nuestra asesoría de imagen digital, encontrar tu look perfecto nunca fue tan fácil ni tan personalizado.</p>
+    <a href="contacto.html" class="btn btn-accent btn-xl">Quiero asesoría de imagen →</a>
+  </div>
+</div>
+
+<!-- ══ SOCIAL ══ -->
+<section class="section">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px">
+    <div data-aos="fade-right">
+      <div class="section-tag"><span class="dot"></span> Síguenos</div>
+      <h2 class="section-title mt-16">Lumina en <em>Instagram</em></h2>
+    </div>
+    <a href="https://instagram.com" target="_blank" class="btn btn-outline btn-sm" data-aos="fade-left">
+      @lumina.store.ec →
+    </a>
+  </div>
+
+  <div class="social-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="social-tile">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&auto=format&fit=crop&q=80" alt="IG post 1" loading="lazy" />
+    </div>
+    <div class="social-tile">
+      <img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=400&auto=format&fit=crop&q=80" alt="IG post 2" loading="lazy" />
+    </div>
+    <div class="social-tile">
+      <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&auto=format&fit=crop&q=80" alt="IG post 3" loading="lazy" />
+    </div>
+    <div class="social-tile">
+      <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&auto=format&fit=crop&q=80" alt="IG post 4" loading="lazy" />
+    </div>
+    <div class="social-tile">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&auto=format&fit=crop&q=80" alt="IG post 5" loading="lazy" />
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:28px" data-aos="fade-up">
+    <p style="color:var(--gray);font-size:14px;margin-bottom:16px">También en TikTok — looks, unboxings y detrás de cámaras</p>
+    <a href="https://tiktok.com" target="_blank" class="btn btn-outline">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      Ver TikTok
+    </a>
+  </div>
+</section>
+
+<!-- ══ MARQUEE 3 ══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">ENVÍO A TODO ECUADOR <span class="sep">✦</span> DEVOLUCIÓN 30 DÍAS <span class="sep">✦</span> PAGO SEGURO <span class="sep">✦</span> ATENCIÓN 24/7 <span class="sep">✦</span> CURADURÍA EDITORIAL <span class="sep">✦</span> UNBOXING PREMIUM <span class="sep">✦</span></div>
+    <div class="marquee-item">ENVÍO A TODO ECUADOR <span class="sep">✦</span> DEVOLUCIÓN 30 DÍAS <span class="sep">✦</span> PAGO SEGURO <span class="sep">✦</span> ATENCIÓN 24/7 <span class="sep">✦</span> CURADURÍA EDITORIAL <span class="sep">✦</span> UNBOXING PREMIUM <span class="sep">✦</span></div>
+  </div>
+</div>
+
+<!-- ══ NEWSLETTER ══ -->
+<section class="section">
+  <div class="newsletter" data-aos="zoom-in" data-aos-duration="800">
+    <div>
+      <div class="section-tag" style="background:rgba(0,0,0,.1);color:var(--bg);border-color:rgba(0,0,0,.15)">
+        <span class="dot" style="background:var(--bg)"></span> Newsletter
+      </div>
+      <h2 class="mt-16">Ofertas exclusivas<br/>para ti.</h2>
+      <p>Sé la primera en conocer nuevas colecciones, descuentos y contenido de estilo. Sin spam.</p>
+    </div>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Tu correo electrónico" required />
+      <button type="submit">Suscribirme gratis →</button>
+    </form>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand" data-aos="fade-right">
+      <div class="logo">LUMIN<span>A</span></div>
+      <p>Plataforma de moda digital ecuatoriana. Curaduría de inventario, asesoría de imagen y experiencia de compra que te ilumina.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" title="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" title="TikTok">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+        </a>
+        <a href="https://wa.me/593983822897" target="_blank" title="WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        </a>
+        <a href="mailto:lumina.store.ec@gmail.com" title="Email">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+      <h4>Tienda</h4>
+      <ul>
+        <li><a href="catalogo.html">Catálogo</a></li>
+        <li><a href="catalogo.html">Novedades</a></li>
+        <li><a href="catalogo.html">Ofertas</a></li>
+        <li><a href="mayoristas.html">Mayoristas B2B</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" data-aos="fade-up" data-aos-delay="150">
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="nosotros.html">Misión & Visión</a></li>
+        <li><a href="nosotros.html">Equipo</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+      <h4>Ayuda</h4>
+      <ul>
+        <li><a href="contacto.html">Soporte 24/7</a></li>
+        <li><a href="contacto.html">Rastrear pedido</a></li>
+        <li><a href="contacto.html">Guía de tallas</a></li>
+        <li><a href="contacto.html">Devoluciones</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Lumina Concept Store. Hecho en Guayaquil, Ecuador.</p>
+  </div>
+</footer>
+
+<!-- WHATSAPP -->
+<div class="wa-float">
+  <span class="wa-tooltip">Escríbenos ahora</span>
+  <a class="wa-btn" href="https://wa.me/593983822897?text=Hola!%20Vengo%20desde%20la%20web%20de%20Lumina" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+  </a>
+</div>
+
+<!-- CHATBOT -->
+<button class="chatbot-toggle" id="chatToggle">✦</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">✦</div>
+    <div class="chatbot-header-info">
+      <h4>Luna · Asistente Lumina</h4>
+      <p>Responde en segundos</p>
+    </div>
+    <div class="chatbot-status"></div>
+  </div>
+  <div class="chatbot-body" id="chatBody"></div>
+  <div class="chatbot-footer">
+    <input type="text" id="chatInput" placeholder="Escribe tu consulta..." />
+    <button id="chatSend">→</button>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<!-- AOS CDN -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Ratings y stock en productos destacados
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.product-card[data-id]').forEach(card => {
+      const p = getProduct(parseInt(card.dataset.id));
+      if (!p || !p.rating) return;
+      const cat = card.querySelector('.product-category');
+      if (!cat) return;
+      const row = document.createElement('div');
+      row.className = 'product-meta-row';
+      row.innerHTML = `<div class="card-star-row"><div style="display:flex;gap:2px">${starsHTML(p.rating)}</div><span class="card-rating">${p.rating}</span><span class="card-reviews">(${p.reviewCount})</span></div>${stockBadgeHTML(p.stock)}`;
+      cat.insertAdjacentElement('afterend', row);
+    });
+  });
+
+  // Init AOS
+  AOS.init({ once: true, offset: 80 });
+
+  // Nav scroll
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Cursor glow
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+  // Service items → link to catalog
+  document.querySelectorAll('.service-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const links = ['catalogo.html','contacto.html','index.html#chatbot','mayoristas.html'];
+      const idx = Array.from(item.parentElement.children).indexOf(item);
+      window.location.href = links[idx] || 'catalogo.html';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nosotros — Lumina Concept Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ── HERO SPLIT ── */
+    .about-hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: var(--nav-h);
+    }
+
+    .about-hero-left {
+      padding: 80px 64px 80px 48px;
+      display: flex; flex-direction: column; justify-content: center;
+      background: var(--bg);
+    }
+
+    .about-hero-left h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(52px, 6vw, 84px); font-weight: 800;
+      letter-spacing: -3.5px; line-height: 0.95;
+    }
+
+    .about-hero-left h1 .outline {
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+
+    .about-hero-left h1 .accent { color: var(--accent); }
+
+    .about-hero-left p {
+      color: var(--gray); font-size: 16px; line-height: 1.8;
+      max-width: 400px; margin-top: 28px; margin-bottom: 36px;
+    }
+
+    .about-hero-right {
+      position: relative; overflow: hidden;
+    }
+
+    .about-hero-right img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(.65) saturate(.75);
+    }
+
+    .about-hero-right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 30%);
+    }
+
+    .about-hero-badge {
+      position: absolute; bottom: 40px; right: 40px;
+      background: var(--accent); border-radius: 20px; padding: 20px 28px;
+      color: var(--bg);
+    }
+
+    .about-hero-badge .num {
+      font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; line-height: 1;
+    }
+
+    .about-hero-badge .lbl { font-size: 13px; font-weight: 600; opacity: .65; margin-top: 4px; }
+
+    /* ── MV CARDS ── */
+    .mv-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+
+    .mv-card {
+      border-radius: 20px; padding: 40px; position: relative; overflow: hidden;
+      border: 1px solid var(--gray-light);
+    }
+
+    .mv-card.mision { background: var(--surface2); }
+    .mv-card.vision { background: var(--accent-dim); border-color: rgba(196,255,0,.2); }
+
+    .mv-icon {
+      width: 52px; height: 52px;
+      border: 1.5px solid var(--accent);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      background: var(--accent-dim);
+    }
+
+    .mv-icon svg { stroke: var(--accent); }
+
+
+    .mv-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 16px; color: var(--accent);
+    }
+
+    .mv-card p { font-size: 15px; color: var(--gray-mid); line-height: 1.8; }
+
+    /* ── CANVAS ── */
+
+    /* ── TEAM ── */
+    .team-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+    }
+
+    .team-photo-card {
+      background: var(--surface);
+      border: 1px solid var(--gray-light);
+      border-radius: 20px; overflow: hidden;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+
+    .team-photo-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
+      border-color: var(--accent);
+    }
+
+    .team-photo {
+      height: 200px; overflow: hidden; position: relative;
+    }
+
+    .team-photo img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top;
+      filter: brightness(.8) saturate(.7);
+      transition: transform .5s, filter .5s;
+    }
+
+    .team-photo-card:hover .team-photo img { transform: scale(1.06); filter: brightness(.95) saturate(1); }
+
+    .team-photo-info { padding: 16px 18px 20px; }
+    .team-photo-info h4 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--white); }
+    .team-photo-info p { font-size: 11px; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 600; letter-spacing: .5px; margin-top: 3px; }
+
+    /* ── ROADMAP ── */
+    .roadmap-section {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+
+    .roadmap-visual {
+      height: 500px; border-radius: 24px; overflow: hidden; position: relative;
+    }
+
+    .roadmap-visual img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.55) saturate(.6); }
+
+    .roadmap-visual-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(8,8,8,.85));
+    }
+
+    .roadmap-visual-text {
+      position: absolute; bottom: 32px; left: 32px; right: 32px;
+    }
+
+    .roadmap-visual-text h3 {
+      font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--white);
+    }
+
+    .roadmap-visual-text p { font-size: 13px; color: var(--gray); margin-top: 6px; }
+
+    /* ── BIG QUOTE ── */
+    .big-quote {
+      text-align: center; padding: 100px 48px;
+      background: var(--surface);
+      border-top: 1px solid var(--gray-light);
+      border-bottom: 1px solid var(--gray-light);
+      position: relative; overflow: hidden;
+    }
+
+    .big-quote::before {
+      content: '"';
+      position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      font-family: 'Syne', sans-serif; font-size: 400px; font-weight: 800;
+      color: rgba(196,255,0,.03); line-height: 1; pointer-events: none;
+    }
+
+    .big-quote blockquote {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(24px, 3vw, 40px); font-weight: 700;
+      letter-spacing: -1px; line-height: 1.3;
+      max-width: 800px; margin: 0 auto;
+      color: var(--white);
+    }
+
+    .big-quote blockquote span { color: var(--accent); }
+
+    .big-quote cite {
+      display: block; font-size: 13px; font-style: normal;
+      color: var(--gray); margin-top: 24px; letter-spacing: .5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="mainNav">
+  <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="catalogo.html">Catálogo</a></li>
+    <li><a href="nosotros.html" class="active">Nosotros</a></li>
+    <li><a href="mayoristas.html">Mayoristas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-search" onclick="openSearch()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+    <a href="carrito.html" class="btn-cart"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Carrito <span class="cart-count">0</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="about-hero-left" data-aos="fade-right" data-aos-duration="900">
+    <div class="section-tag"><span class="dot"></span> Nuestra historia</div>
+    <h1 class="mt-16">
+      SOBRE<br/>
+      <span class="outline">LUMINA</span><br/>
+      <span class="accent">STORE.</span>
+    </h1>
+    <p>Somos una tienda de moda digital ecuatoriana que combina tecnología, curaduría editorial y atención humanizada. Nuestro propósito va más allá de vender ropa: creamos experiencias.</p>
+    <div style="display:flex;gap:12px">
+      <a href="catalogo.html" class="btn btn-accent">Ver colección →</a>
+      <a href="contacto.html" class="btn btn-outline">Contactar</a>
+    </div>
+  </div>
+  <div class="about-hero-right" data-aos="fade-left" data-aos-duration="1000">
+    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&auto=format&fit=crop&q=80" alt="Fashion" />
+    <div class="about-hero-right-overlay"></div>
+    <div class="about-hero-badge">
+      <div class="num">2024</div>
+      <div class="lbl">Fundada en Ecuador</div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG QUOTE -->
+<div class="big-quote" data-aos="zoom-in" data-aos-duration="800">
+  <blockquote>
+    "La ventaja competitiva en la economía digital nace de combinar<br/>
+    <span>tecnología, análisis y empatía humana.</span>"
+  </blockquote>
+  <cite>— Jahir Rodríguez, Co-fundador · Lumina Concept Store</cite>
+</div>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:56px">
+    <div data-aos="fade-right">
+      <div class="section-tag"><span class="dot"></span> Propósito</div>
+      <h2 class="section-title mt-16">Misión &<br/><em>Visión</em></h2>
+    </div>
+    <p style="color:var(--gray);font-size:15px;line-height:1.8" data-aos="fade-left">
+      Lumina Concept Store es una iniciativa de comercio electrónico de moda que integra la agilidad de las ventas digitales con un soporte personalizado de asesoría de imagen.
+    </p>
+  </div>
+
+  <div class="mv-grid">
+    <div class="mv-card mision" data-aos="fade-up" data-aos-delay="0">
+      <div class="mv-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+      </div>
+      <h3>Misión</h3>
+      <p>Brindar una experiencia de compra de moda versátil y accesible, conectando las últimas tendencias globales con el estilo personal de nuestros clientes a través de un servicio ágil y humano, sin importar la distancia física.</p>
+    </div>
+    <div class="mv-card vision" data-aos="fade-up" data-aos-delay="120">
+      <div class="mv-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      <h3>Visión</h3>
+      <p>Ser la plataforma de moda digital líder en la región para 2028, reconocida por nuestra innovación tecnológica en la selección de tallas y un modelo de logística sostenible que minimice la huella de carbono.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- EQUIPO -->
+<section class="section">
+  <div data-aos="fade-up">
+    <div class="section-tag"><span class="dot"></span> El equipo</div>
+    <h2 class="section-title mt-16 mb-32">Quiénes <em>somos</em></h2>
+  </div>
+  <div class="team-grid" data-aos="fade-up" data-aos-duration="800">
+    <div class="team-photo-card">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80" alt="Anthony" />
+      </div>
+      <div class="team-photo-info">
+        <h4>Anthony Lamilla</h4>
+        <p>Estrategia & Canvas</p>
+      </div>
+    </div>
+    <div class="team-photo-card">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80" alt="Jahir" />
+      </div>
+      <div class="team-photo-info">
+        <h4>Jahir Rodríguez</h4>
+        <p>Propuesta de Valor</p>
+      </div>
+    </div>
+    <div class="team-photo-card">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=80" alt="Brigida" />
+      </div>
+      <div class="team-photo-info">
+        <h4>Brigida García</h4>
+        <p>Marketing & Clientes</p>
+      </div>
+    </div>
+    <div class="team-photo-card">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80" alt="Byron" />
+      </div>
+      <div class="team-photo-info">
+        <h4>Byron Yagual</h4>
+        <p>Tecnología & Logística</p>
+      </div>
+    </div>
+    <div class="team-photo-card">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=80" alt="Joseph" />
+      </div>
+      <div class="team-photo-info">
+        <h4>Joseph Medina</h4>
+        <p>Operaciones & Soporte</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section" style="padding-top:0">
+  <div class="roadmap-section">
+    <div class="roadmap-visual" data-aos="fade-right">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&auto=format&fit=crop&q=80" alt="Roadmap" />
+      <div class="roadmap-visual-overlay"></div>
+      <div class="roadmap-visual-text">
+        <h3>Nuestra hoja de ruta</h3>
+        <p>De Guayaquil al liderazgo regional en moda digital</p>
+      </div>
+    </div>
+    <div data-aos="fade-left">
+      <div class="section-tag"><span class="dot"></span> Hoja de ruta</div>
+      <h2 class="section-title mt-16 mb-32">Nuestro <em>camino</em></h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="date">2024 — Q1</div>
+          <h4>Lanzamiento de la plataforma</h4>
+          <p>Sitio web, catálogo inicial de 50 productos y activación de Instagram y TikTok.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="date">2024 — Q2</div>
+          <h4>Chatbot y módulo B2B</h4>
+          <p>Implementación de Luna (chatbot 2 niveles), apertura mayoristas y email marketing.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="date">2025</div>
+          <h4>Expansión a provincias</h4>
+          <p>Cobertura logística nacional y colaboraciones con micro-influencers regionales.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--surface3);box-shadow:none;border-color:var(--gray-border)"></div>
+          <div class="date">2026 — 2028</div>
+          <h4>Liderazgo regional</h4>
+          <p>Plataforma líder en Ecuador con IA para tallas y logística sostenible de baja huella de carbono.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="section" style="padding-top:0;padding-bottom:80px">
+  <div style="background:var(--accent);border-radius:28px;padding:64px;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;overflow:hidden;position:relative;" data-aos="zoom-in">
+    <div style="position:absolute;right:-40px;top:-40px;width:300px;height:300px;background:rgba(0,0,0,.06);border-radius:50%"></div>
+    <div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,44px);font-weight:800;letter-spacing:-1.5px;color:var(--bg);line-height:1.1">
+        ¿Listo para explorar<br/>la colección?
+      </h2>
+      <p style="color:rgba(0,0,0,.55);font-size:15px;margin-top:12px">Más de 120 prendas curadas esperan por ti.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;position:relative;z-index:1">
+      <a href="catalogo.html" class="btn btn-white btn-lg">Ver catálogo →</a>
+      <a href="mayoristas.html" class="btn btn-outline-accent btn-lg" style="border-color:rgba(0,0,0,.25);color:var(--bg)">Programa B2B</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">LUMIN<span>A</span></div>
+      <p>Plataforma de moda digital ecuatoriana. Curaduría, asesoría e innovación al servicio de tu estilo.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" title="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" title="TikTok">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+        </a>
+        <a href="https://wa.me/593983822897" target="_blank" title="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        </a>
+        <a href="mailto:lumina.store.ec@gmail.com" title="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Tienda</h4><ul><li><a href="catalogo.html">Catálogo</a></li><li><a href="mayoristas.html">Mayoristas</a></li></ul></div>
+    <div class="footer-col"><h4>Empresa</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="contacto.html">Devoluciones</a></li><li><a href="contacto.html">Guía de tallas</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Lumina Concept Store. Hecho en Ecuador.</p>
+  </div>
+</footer>
+
+<div class="wa-float">
+  <span class="wa-tooltip">Contáctanos</span>
+  <a class="wa-btn" href="https://wa.me/593983822897" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+  </a>
+</div>
+<button class="chatbot-toggle" id="chatToggle">✦</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">✦</div>
+    <div class="chatbot-header-info"><h4>Luna · Asistente Lumina</h4><p>Responde en segundos</p></div>
+    <div class="chatbot-status"></div>
+  </div>
+  <div class="chatbot-body" id="chatBody"></div>
+  <div class="chatbot-footer"><input type="text" id="chatInput" placeholder="Escribe tu consulta..." /><button id="chatSend">→</button></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+  AOS.init({ once: true, offset: 80 });
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+</script>
+</body>
+</html>

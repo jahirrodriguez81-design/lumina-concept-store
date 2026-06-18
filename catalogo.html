@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo — Lumina Concept Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      padding: 40px 48px 80px;
+    }
+
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+    .price-range { display: flex; flex-direction: column; gap: 12px; }
+    .price-range input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .price-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray); }
+
+    .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+    .color-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .color-swatch {
+      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 1px var(--gray-border);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .color-swatch:hover, .color-swatch.active {
+      box-shadow: 0 0 0 2px var(--accent);
+      transform: scale(1.15);
+    }
+
+    .catalog-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
+    }
+
+    .catalog-header h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+    .catalog-header p { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+    .catalog-controls { display: flex; align-items: center; gap: 12px; }
+
+    .catalog-sort {
+      background: var(--surface); border: 1px solid var(--gray-border);
+      border-radius: 100px; padding: 9px 16px;
+      font-size: 13px; font-weight: 500;
+      color: var(--white); outline: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .catalog-sort option { background: var(--surface2); }
+
+    .view-toggle {
+      display: flex; background: var(--surface);
+      border-radius: 100px; padding: 4px; gap: 4px;
+      border: 1px solid var(--gray-border);
+    }
+
+    .view-btn {
+      background: none; border: none; border-radius: 100px;
+      padding: 6px 12px; cursor: pointer; font-size: 14px;
+      color: var(--gray); transition: all .2s;
+    }
+    .view-btn.active { background: var(--accent); color: var(--bg); }
+
+    .products-grid-cat {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+
+    .pagination {
+      display: flex; justify-content: center; align-items: center;
+      gap: 8px; margin-top: 48px;
+    }
+
+    /* Catalog hero banner */
+    .cat-hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--gray-light);
+      padding: calc(var(--nav-h) + 60px) 48px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-hero::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(196,255,0,.06) 0%, transparent 65%);
+    }
+
+    .cat-hero-left h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 5vw, 64px); font-weight: 800;
+      letter-spacing: -2.5px; line-height: 1;
+    }
+
+    .cat-hero-left h1 span { color: var(--accent); }
+
+    .cat-hero-left p {
+      color: var(--gray); font-size: 15px; margin-top: 16px; line-height: 1.7;
+    }
+
+    .cat-hero-right {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+      border-radius: 20px; overflow: hidden; height: 280px;
+    }
+
+    .cat-hero-tile { overflow: hidden; }
+    .cat-hero-tile img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.75); transition: transform .5s; }
+    .cat-hero-tile:hover img { transform: scale(1.06); filter: brightness(.9); }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="mainNav">
+  <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="catalogo.html" class="active">Catálogo</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="mayoristas.html">Mayoristas</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-search" onclick="openSearch()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+    <a href="carrito.html" class="btn-cart"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Carrito <span class="cart-count">0</span></a>
+  </div>
+</nav>
+
+<!-- CAT HERO -->
+<div class="cat-hero">
+  <div class="cat-hero-left" data-aos="fade-right">
+    <div class="section-tag"><span class="dot"></span> Colección 2024</div>
+    <h1 class="mt-16">Catálogo<br/><span>Lumina</span></h1>
+    <p>Más de 120 prendas y accesorios seleccionados. Filtra por género, categoría, precio y talla.</p>
+    <div style="display:flex;gap:10px;margin-top:28px;flex-wrap:wrap">
+      <span style="background:var(--accent-dim);color:var(--accent);border:1px solid rgba(196,255,0,.2);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;font-family:'Syne',sans-serif;">120+ productos</span>
+      <span style="background:var(--accent-dim);color:var(--accent);border:1px solid rgba(196,255,0,.2);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;font-family:'Syne',sans-serif;">Envío a todo Ecuador</span>
+      <span style="background:var(--accent-dim);color:var(--accent);border:1px solid rgba(196,255,0,.2);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;font-family:'Syne',sans-serif;">Devolución 30 días</span>
+    </div>
+  </div>
+  <div class="cat-hero-right" data-aos="fade-left">
+    <div class="cat-hero-tile"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&auto=format&fit=crop&q=80" alt="Fashion" /></div>
+    <div class="cat-hero-tile"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80" alt="Model" /></div>
+    <div class="cat-hero-tile"><img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=500&auto=format&fit=crop&q=80" alt="Style" /></div>
+    <div class="cat-hero-tile"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&auto=format&fit=crop&q=80" alt="Store" /></div>
+  </div>
+</div>
+
+<!-- CATALOG LAYOUT -->
+<div class="catalog-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" data-aos="fade-right" data-aos-duration="700">
+    <div class="sidebar-section">
+      <h3>Categorías</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label class="sidebar-check"><input type="checkbox" checked /> Todas</label>
+        <label class="sidebar-check"><input type="checkbox" /> Vestidos</label>
+        <label class="sidebar-check"><input type="checkbox" /> Camisas y blusas</label>
+        <label class="sidebar-check"><input type="checkbox" /> Pantalones y jeans</label>
+        <label class="sidebar-check"><input type="checkbox" /> Abrigos y chaquetas</label>
+        <label class="sidebar-check"><input type="checkbox" /> Calzado</label>
+        <label class="sidebar-check"><input type="checkbox" /> Accesorios</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Género</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label class="sidebar-check"><input type="checkbox" checked /> Todos</label>
+        <label class="sidebar-check"><input type="checkbox" /> Mujer</label>
+        <label class="sidebar-check"><input type="checkbox" /> Hombre</label>
+        <label class="sidebar-check"><input type="checkbox" /> Unisex</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Precio</h3>
+      <div class="price-range">
+        <input type="range" min="0" max="200" value="150" oninput="document.getElementById('price-val').textContent='$'+this.value" />
+        <div class="price-labels"><span>$0</span><span id="price-val">$150</span><span>$200+</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Talla</h3>
+      <div class="size-grid">
+        <button class="size-btn">XS</button>
+        <button class="size-btn active">S</button>
+        <button class="size-btn active">M</button>
+        <button class="size-btn">L</button>
+        <button class="size-btn">XL</button>
+        <button class="size-btn">XXL</button>
+        <button class="size-btn">36</button>
+        <button class="size-btn">38</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Color</h3>
+      <div class="color-picker">
+        <div class="color-swatch active" style="background:#111" title="Negro"></div>
+        <div class="color-swatch" style="background:#f5f5f5;border-color:#333" title="Blanco"></div>
+        <div class="color-swatch" style="background:#e74c3c" title="Rojo"></div>
+        <div class="color-swatch" style="background:#3498db" title="Azul"></div>
+        <div class="color-swatch" style="background:#27ae60" title="Verde"></div>
+        <div class="color-swatch" style="background:#c9a84c" title="Dorado"></div>
+        <div class="color-swatch" style="background:#9b59b6" title="Violeta"></div>
+        <div class="color-swatch" style="background:#e67e22" title="Naranja"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-accent" style="width:100%;justify-content:center">Aplicar filtros</button>
+    <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center" onclick="showToast('Filtros restablecidos')">Limpiar</button>
+  </aside>
+
+  <!-- PRODUCTS -->
+  <main>
+    <div class="catalog-header" data-aos="fade-down">
+      <div>
+        <h1>Todos los productos</h1>
+        <p>Mostrando 12 de 120 productos</p>
+      </div>
+      <div class="catalog-controls">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">Todo</button>
+          <button class="filter-tab" data-filter="mujer">Mujer</button>
+          <button class="filter-tab" data-filter="hombre">Hombre</button>
+          <button class="filter-tab" data-filter="unisex">Unisex</button>
+          <button class="filter-tab" data-filter="ofertas">Ofertas</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:12px;margin-bottom:24px">
+      <select class="catalog-sort">
+        <option>Ordenar: Destacados</option>
+        <option>Precio: menor a mayor</option>
+        <option>Precio: mayor a menor</option>
+        <option>Más nuevos</option>
+        <option>Más vendidos</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active">▦</button>
+        <button class="view-btn">☰</button>
+      </div>
+    </div>
+
+    <div class="products-grid-cat" id="catalogGrid" data-aos="fade-up" data-aos-duration="700">
+
+      <div class="product-card" data-category="mujer" data-id="1">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80" alt="Vestido" loading="lazy" />
+          <span class="product-badge">Nuevo</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Mujer · Vestidos</div>
+          <div class="product-name">Vestido Lumina Floral</div>
+          <div class="product-footer">
+            <div class="product-price">$68.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#9b59b6"></div><div class="color-dot" style="background:#e74c3c"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="hombre" data-id="2">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=80" alt="Abrigo" loading="lazy" />
+          <span class="product-badge sale">-25%</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Hombre · Abrigos</div>
+          <div class="product-name">Abrigo Oslo Premium</div>
+          <div class="product-footer">
+            <div class="product-price">$89.00 <span class="old">$120.00</span></div>
+            <div class="color-dots"><div class="color-dot" style="background:#2c3e50"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="mujer" data-id="3">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&auto=format&fit=crop&q=80" alt="Mujer" loading="lazy" />
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Mujer · Casual</div>
+          <div class="product-name">Look Editora Urban</div>
+          <div class="product-footer">
+            <div class="product-price">$54.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#f5f5f5"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="unisex" data-id="4">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&auto=format&fit=crop&q=80" alt="Store" loading="lazy" />
+          <span class="product-badge">Top venta</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Unisex · Accesorios</div>
+          <div class="product-name">Kit Accesorios Dorados</div>
+          <div class="product-footer">
+            <div class="product-price">$38.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#c9a84c"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="hombre" data-id="5">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&auto=format&fit=crop&q=80" alt="Ropa" loading="lazy" />
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Hombre · Casual</div>
+          <div class="product-name">Camisa Linen Executive</div>
+          <div class="product-footer">
+            <div class="product-price">$42.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#ecf0f1"></div><div class="color-dot" style="background:#3498db"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="mujer" data-id="6">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
+          <span class="product-badge sale">-15%</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Mujer · Outfits</div>
+          <div class="product-name">Jumpsuit Sunset Coral</div>
+          <div class="product-footer">
+            <div class="product-price">$59.00 <span class="old">$70.00</span></div>
+            <div class="color-dots"><div class="color-dot" style="background:#e74c3c"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="unisex" data-id="7">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=500&auto=format&fit=crop&q=80" alt="Shopping" loading="lazy" />
+          <span class="product-badge">Nuevo</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Unisex · Bolsos</div>
+          <div class="product-name">Tote Bag Lumina</div>
+          <div class="product-footer">
+            <div class="product-price">$75.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#c9a84c"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="hombre" data-id="8">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Hombre · Formal</div>
+          <div class="product-name">Look Editorial Noche</div>
+          <div class="product-footer">
+            <div class="product-price">$95.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#2c3e50"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="mujer" data-id="9">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=80" alt="Estilo" loading="lazy" />
+          <span class="product-badge">Exclusivo</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Mujer · Tops</div>
+          <div class="product-name">Blusa Lumina Signature</div>
+          <div class="product-footer">
+            <div class="product-price">$45.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#9b59b6"></div><div class="color-dot" style="background:#f5f5f5"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="ofertas" data-id="10">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&auto=format&fit=crop&q=80" alt="Oferta" loading="lazy" />
+          <span class="product-badge sale">-30%</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Mujer · Casual</div>
+          <div class="product-name">Set Casual Verano</div>
+          <div class="product-footer">
+            <div class="product-price">$49.00 <span class="old">$70.00</span></div>
+            <div class="color-dots"><div class="color-dot" style="background:#e74c3c"></div><div class="color-dot" style="background:#111"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="hombre" data-id="11">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&auto=format&fit=crop&q=80" alt="Ropa hombre" loading="lazy" />
+          <span class="product-badge sale">-20%</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Hombre · Pantalones</div>
+          <div class="product-name">Jean Slim Vintage</div>
+          <div class="product-footer">
+            <div class="product-price">$52.00 <span class="old">$65.00</span></div>
+            <div class="color-dots"><div class="color-dot" style="background:#1a5276"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="unisex" data-id="12">
+        <div class="product-image">
+          <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=80" alt="Accesorios" loading="lazy" />
+          <span class="product-badge">Nuevo</span>
+          <button class="product-wishlist">♡</button>
+          <button class="product-quick-add">+ Agregar</button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Unisex · Accesorios</div>
+          <div class="product-name">Bolso Flame Edition</div>
+          <div class="product-footer">
+            <div class="product-price">$82.00</div>
+            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#c9a84c"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pagination" data-aos="fade-up">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <span style="color:var(--gray);padding:0 4px">...</span>
+      <button class="page-btn">10</button>
+      <button class="page-btn" style="width:auto;padding:0 20px;border-radius:100px">Siguiente →</button>
+    </div>
+  </main>
+</div>
+
+<!-- RECENTLY VIEWED -->
+<div class="recently-viewed" id="recentlyViewedSection">
+  <h3>Vistos recientemente</h3>
+  <div class="recently-viewed-grid" id="recentlyViewedGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">LUMIN<span>A</span></div>
+      <p>Plataforma de moda digital ecuatoriana. Curaduría de inventario, asesoría de imagen y experiencia de compra superior.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com" target="_blank" title="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" title="TikTok">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+        </a>
+        <a href="https://wa.me/593983822897" target="_blank" title="WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Tienda</h4><ul><li><a href="catalogo.html">Catálogo</a></li><li><a href="mayoristas.html">Mayoristas</a></li><li><a href="catalogo.html">Ofertas</a></li></ul></div>
+    <div class="footer-col"><h4>Empresa</h4><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="contacto.html">Devoluciones</a></li><li><a href="contacto.html">Guía de tallas</a></li><li><a href="contacto.html">Rastrear pedido</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Lumina Concept Store. Hecho en Ecuador.</p>
+  </div>
+</footer>
+
+<div class="wa-float">
+  <span class="wa-tooltip">¿Necesitas ayuda para elegir?</span>
+  <a class="wa-btn" href="https://wa.me/593983822897?text=Hola!%20Quiero%20ayuda%20con%20el%20cat%C3%A1logo" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+  </a>
+</div>
+<button class="chatbot-toggle" id="chatToggle">✦</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">✦</div>
+    <div class="chatbot-header-info"><h4>Luna · Asistente Lumina</h4><p>Responde en segundos</p></div>
+    <div class="chatbot-status"></div>
+  </div>
+  <div class="chatbot-body" id="chatBody"></div>
+  <div class="chatbot-footer"><input type="text" id="chatInput" placeholder="Escribe tu consulta..." /><button id="chatSend">→</button></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+  AOS.init({ once: true, offset: 60 });
+  document.querySelectorAll('.size-btn').forEach(b => b.addEventListener('click', () => b.classList.toggle('active')));
+  document.querySelectorAll('.color-swatch').forEach(s => s.addEventListener('click', () => {
+    document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+  }));
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
+
+  // ── Inyectar ratings y stock en tarjetas estáticas ──
+  document.querySelectorAll('.product-card[data-id]').forEach(card => {
+    const p = getProduct(parseInt(card.dataset.id));
+    if (!p || !p.rating) return;
+    const info = card.querySelector('.product-info');
+    if (!info) return;
+    const cat = info.querySelector('.product-category');
+    const metaRow = document.createElement('div');
+    metaRow.className = 'product-meta-row';
+    metaRow.innerHTML = `
+      <div class="card-star-row">
+        <div style="display:flex;gap:2px">${starsHTML(p.rating)}</div>
+        <span class="card-rating">${p.rating}</span>
+        <span class="card-reviews">(${p.reviewCount})</span>
+      </div>
+      ${stockBadgeHTML(p.stock)}`;
+    cat.insertAdjacentElement('afterend', metaRow);
+  });
+
+  // ── Recently viewed ──
+  renderRecentlyViewed('recentlyViewedGrid');
+
+  // ── Sort funcional ──
+  document.querySelector('.catalog-sort').addEventListener('change', function() {
+    const grid = document.getElementById('catalogGrid');
+    const cards = Array.from(grid.querySelectorAll('.product-card[data-id]'));
+    const val = this.value;
+    cards.sort((a, b) => {
+      const pa = getProduct(parseInt(a.dataset.id));
+      const pb = getProduct(parseInt(b.dataset.id));
+      if (!pa || !pb) return 0;
+      if (val.includes('menor')) return pa.price - pb.price;
+      if (val.includes('mayor')) return pb.price - pa.price;
+      if (val.includes('nuevos')) return pb.id - pa.id;
+      if (val.includes('vendidos')) return (pb.reviewCount||0) - (pa.reviewCount||0);
+      return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+  });
+</script>
+</body>
+</html>

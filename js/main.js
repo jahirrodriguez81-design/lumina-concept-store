@@ -127,7 +127,7 @@ const chatbotData = {
     ]
   },
   order_ok: {
-    msg: 'Perfecto. Escribe tu número de orden (ej: LCS-2024-001) y te doy el estado en segundos 📦',
+    msg: 'Perfecto. Escribe tu número de orden (ej: LCS-2026-001) y te doy el estado en segundos 📦',
     options: [{ label: '🔙 Volver al menú', next: 'welcome' }]
   },
   order_help: {

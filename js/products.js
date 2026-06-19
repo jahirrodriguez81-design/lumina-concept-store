@@ -230,6 +230,63 @@ const LUMINA_PRODUCTS = [
     care: 'Limpiar con crema de cuero · Guardar relleno con papel de seda · Evitar rozaduras · No mojar',
     related: [4, 7, 9],
   },
+  {
+    id: 13,
+    name: 'Polo Piqué Premium',
+    category: 'Hombre', sub: 'Casual',
+    price: 36, oldPrice: null, badge: 'Nuevo',
+    img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80',
+    imgs: [
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&auto=format&fit=crop&q=80',
+    ],
+    colors: [{name:'Blanco',hex:'#ecf0f1'},{name:'Negro',hex:'#111111'},{name:'Azul marino',hex:'#2c3e50'}],
+    sizes: ['S','M','L','XL','XXL'],
+    description: 'Polo de piqué premium con bordado Lumina en el pecho. Tejido de algodón peinado de alta densidad con tratamiento anti-manchas y anti-arrugas. Ideal para uso casual o eventos semi-formales. El clásico reinventado con sello Lumina.',
+    material: '100% Algodón peinado piqué',
+    care: 'Lavar en lavadora a 30°C · No usar blanqueador · Tender a la sombra · Planchar a temperatura media',
+    related: [2, 5, 8],
+  },
+  {
+    id: 14,
+    name: 'Gafas Lumina Signature',
+    category: 'Unisex', sub: 'Accesorios',
+    price: 55, oldPrice: null, badge: 'Exclusivo',
+    img: 'https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=900&auto=format&fit=crop&q=80',
+    imgs: [
+      'https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&auto=format&fit=crop&q=80',
+    ],
+    colors: [{name:'Negro',hex:'#111111'},{name:'Dorado',hex:'#c9a84c'},{name:'Carey',hex:'#8B4513'}],
+    sizes: ['Talla única'],
+    description: 'Gafas de sol de la línea Signature Lumina con protección UV400. Montura acetato de primera calidad con bisagras de metal reforzado. Lentes polarizadas que reducen el deslumbramiento y protegen la vista. Incluyen estuche rígido y paño de limpieza.',
+    material: 'Montura acetato · Lentes CR-39 polarizadas · Bisagras acero inoxidable',
+    care: 'Limpiar con paño suave y seco · Guardar en estuche · No dejar en superficies calientes · Evitar contacto con químicos',
+    related: [4, 7, 12],
+  },
+  {
+    id: 15,
+    name: 'Mochila Urban Pro',
+    category: 'Unisex', sub: 'Mochilas',
+    price: 68, oldPrice: 90, badge: '-24%',
+    img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&auto=format&fit=crop&q=80',
+    imgs: [
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&auto=format&fit=crop&q=80',
+    ],
+    colors: [{name:'Negro',hex:'#111111'},{name:'Gris grafito',hex:'#5d6d7e'}],
+    sizes: ['Talla única'],
+    description: 'Mochila urbana de uso diario con compartimento acolchado para laptop de hasta 15.6". Puerto USB externo integrado para cargar tu dispositivo en movimiento. Correas ergonómicas con espaldar ventilado. Materiales resistentes al agua.',
+    material: 'Nylon 1000D resistente al agua · Forro interior Oxford · Cierres YKK',
+    care: 'Limpiar con paño húmedo · No lavar en lavadora · Secar a la sombra · Guardar sin contenido en lugar seco',
+    related: [7, 4, 12],
+  },
 ];
 
 // ── DATOS EXTENDIDOS: ratings, stock, reseñas, entrega ──
@@ -298,6 +355,21 @@ const LUMINA_EXTENDED = {
        reviews: [
          { name: 'Alessandra P.',rating: 5, date: '23 may 2025', verified: true,  comment: 'Edición especial que vale la pena. El diseño geométrico es único y la cadena dorada es preciosa.' },
          { name: 'Renata V.',   rating: 5, date: '17 may 2026', verified: true,  comment: 'Bolso de piezas numeradas, llegó con certificado. El cuero genuino es de primera calidad.' },
+       ]},
+  13:{ stock: 15, rating: 4.7, reviewCount: 19, deliveryDays: '2-3',
+       reviews: [
+         { name: 'Rafael M.',   rating: 5, date: '15 jun 2026', verified: true,  comment: 'Calidad excelente, el tejido piqué es muy fino y el bordado está perfecto. Compré en negro y blanco.' },
+         { name: 'Tomás P.',    rating: 4, date: '10 jun 2026', verified: true,  comment: 'Muy cómodo y fresco para el clima de Ecuador. El ajuste queda muy bien.' },
+       ]},
+  14:{ stock: 8,  rating: 4.9, reviewCount: 12, deliveryDays: '2-3',
+       reviews: [
+         { name: 'Andrea L.',   rating: 5, date: '18 jun 2026', verified: true,  comment: 'Las gafas son espectaculares, el estuche incluido es de primera calidad. Las lentes polarizadas son increíbles.' },
+         { name: 'Marco A.',    rating: 5, date: '12 jun 2026', verified: true,  comment: 'Diseño muy elegante y cómodo. Protección UV excelente para la playa y la ciudad.' },
+       ]},
+  15:{ stock: 6,  rating: 4.6, reviewCount: 24, deliveryDays: '2-4',
+       reviews: [
+         { name: 'Karla R.',    rating: 5, date: '16 jun 2026', verified: true,  comment: 'La mochila es perfecta para la universidad. El puerto USB es muy práctico y el compartimento para laptop está bien acolchado.' },
+         { name: 'Nicolás F.', rating: 4, date: '8 jun 2026',  verified: true,  comment: 'Muy resistente y espaciosa. Le cabe todo. El material repele muy bien el agua.' },
        ]},
 };
 

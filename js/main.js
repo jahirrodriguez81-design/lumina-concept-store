@@ -89,7 +89,8 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
 
 function filterProducts(filter) {
   document.querySelectorAll('.product-card[data-category]').forEach(card => {
-    const show = filter === 'all' || card.dataset.category === filter;
+    const cats = card.dataset.category.split(' ');
+    const show = filter === 'all' || cats.includes(filter);
     card.style.display = show ? '' : 'none';
   });
 }

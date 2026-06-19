@@ -177,33 +177,28 @@
   <!-- SIDEBAR -->
   <aside class="sidebar" data-aos="fade-right" data-aos-duration="700">
     <div class="sidebar-section">
-      <h3>Categorías</h3>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <label class="sidebar-check"><input type="checkbox" checked /> Todas</label>
-        <label class="sidebar-check"><input type="checkbox" /> Vestidos</label>
-        <label class="sidebar-check"><input type="checkbox" /> Camisas y blusas</label>
-        <label class="sidebar-check"><input type="checkbox" /> Pantalones y jeans</label>
-        <label class="sidebar-check"><input type="checkbox" /> Abrigos y chaquetas</label>
-        <label class="sidebar-check"><input type="checkbox" /> Calzado</label>
-        <label class="sidebar-check"><input type="checkbox" /> Accesorios</label>
+      <h3>Subcategoría</h3>
+      <div style="display:flex;flex-direction:column;gap:8px" id="subCatList">
+        <label class="sidebar-check"><input type="checkbox" data-sub="todas" checked onchange="onSubChange(this)" /> Todas</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="vestidos" onchange="onSubChange(this)" /> Vestidos</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="tops" onchange="onSubChange(this)" /> Tops y Blusas</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="casual" onchange="onSubChange(this)" /> Casual</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="outfits" onchange="onSubChange(this)" /> Outfits y Jumpsuits</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="formal" onchange="onSubChange(this)" /> Formal</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="pantalones" onchange="onSubChange(this)" /> Pantalones y Jeans</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="abrigos" onchange="onSubChange(this)" /> Abrigos y Chaquetas</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="accesorios" onchange="onSubChange(this)" /> Accesorios</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="bolsos" onchange="onSubChange(this)" /> Bolsos</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="mochilas" onchange="onSubChange(this)" /> Mochilas</label>
+        <label class="sidebar-check"><input type="checkbox" data-sub="camisas" onchange="onSubChange(this)" /> Camisas</label>
       </div>
     </div>
 
     <div class="sidebar-section">
-      <h3>Género</h3>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <label class="sidebar-check"><input type="checkbox" checked /> Todos</label>
-        <label class="sidebar-check"><input type="checkbox" /> Mujer</label>
-        <label class="sidebar-check"><input type="checkbox" /> Hombre</label>
-        <label class="sidebar-check"><input type="checkbox" /> Unisex</label>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <h3>Precio</h3>
+      <h3>Precio máximo</h3>
       <div class="price-range">
-        <input type="range" min="0" max="200" value="150" oninput="document.getElementById('price-val').textContent='$'+this.value" />
-        <div class="price-labels"><span>$0</span><span id="price-val">$150</span><span>$200+</span></div>
+        <input type="range" id="priceRange" min="0" max="200" value="200" oninput="onPriceChange(this.value)" />
+        <div class="price-labels"><span>$0</span><span id="price-val">$200</span><span>$200+</span></div>
       </div>
     </div>
 
@@ -211,32 +206,29 @@
       <h3>Talla</h3>
       <div class="size-grid">
         <button class="size-btn">XS</button>
-        <button class="size-btn active">S</button>
-        <button class="size-btn active">M</button>
+        <button class="size-btn">S</button>
+        <button class="size-btn">M</button>
         <button class="size-btn">L</button>
         <button class="size-btn">XL</button>
         <button class="size-btn">XXL</button>
-        <button class="size-btn">36</button>
-        <button class="size-btn">38</button>
       </div>
     </div>
 
     <div class="sidebar-section">
       <h3>Color</h3>
       <div class="color-picker">
-        <div class="color-swatch active" style="background:#111" title="Negro"></div>
+        <div class="color-swatch" style="background:#111" title="Negro"></div>
         <div class="color-swatch" style="background:#f5f5f5;border-color:#333" title="Blanco"></div>
         <div class="color-swatch" style="background:#e74c3c" title="Rojo"></div>
         <div class="color-swatch" style="background:#3498db" title="Azul"></div>
-        <div class="color-swatch" style="background:#27ae60" title="Verde"></div>
         <div class="color-swatch" style="background:#c9a84c" title="Dorado"></div>
         <div class="color-swatch" style="background:#9b59b6" title="Violeta"></div>
         <div class="color-swatch" style="background:#e67e22" title="Naranja"></div>
+        <div class="color-swatch" style="background:#8B4513" title="Carey"></div>
       </div>
     </div>
 
-    <button class="btn btn-accent" style="width:100%;justify-content:center">Aplicar filtros</button>
-    <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center" onclick="showToast('Filtros restablecidos')">Limpiar</button>
+    <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="resetFilters()">Limpiar filtros</button>
   </aside>
 
   <!-- PRODUCTS -->
@@ -244,7 +236,7 @@
     <div class="catalog-header" data-aos="fade-down">
       <div>
         <h1>Todos los productos</h1>
-        <p>Mostrando 12 de 120 productos</p>
+        <p id="catalogCount">Mostrando 15 productos</p>
       </div>
       <div class="catalog-controls">
         <div class="filter-tabs">
@@ -271,210 +263,7 @@
       </div>
     </div>
 
-    <div class="products-grid-cat" id="catalogGrid" data-aos="fade-up" data-aos-duration="700">
-
-      <div class="product-card" data-category="mujer" data-id="1">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80" alt="Vestido" loading="lazy" />
-          <span class="product-badge">Nuevo</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Mujer · Vestidos</div>
-          <div class="product-name">Vestido Lumina Floral</div>
-          <div class="product-footer">
-            <div class="product-price">$68.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#9b59b6"></div><div class="color-dot" style="background:#e74c3c"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="hombre" data-id="2">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=80" alt="Abrigo" loading="lazy" />
-          <span class="product-badge sale">-25%</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Hombre · Abrigos</div>
-          <div class="product-name">Abrigo Oslo Premium</div>
-          <div class="product-footer">
-            <div class="product-price">$89.00 <span class="old">$120.00</span></div>
-            <div class="color-dots"><div class="color-dot" style="background:#2c3e50"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="mujer" data-id="3">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&auto=format&fit=crop&q=80" alt="Mujer" loading="lazy" />
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Mujer · Casual</div>
-          <div class="product-name">Look Editora Urban</div>
-          <div class="product-footer">
-            <div class="product-price">$54.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#f5f5f5"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="unisex" data-id="4">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&auto=format&fit=crop&q=80" alt="Store" loading="lazy" />
-          <span class="product-badge">Top venta</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Unisex · Accesorios</div>
-          <div class="product-name">Kit Accesorios Dorados</div>
-          <div class="product-footer">
-            <div class="product-price">$38.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#c9a84c"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="hombre" data-id="5">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&auto=format&fit=crop&q=80" alt="Ropa" loading="lazy" />
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Hombre · Casual</div>
-          <div class="product-name">Camisa Linen Executive</div>
-          <div class="product-footer">
-            <div class="product-price">$42.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#ecf0f1"></div><div class="color-dot" style="background:#3498db"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="mujer" data-id="6">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
-          <span class="product-badge sale">-15%</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Mujer · Outfits</div>
-          <div class="product-name">Jumpsuit Sunset Coral</div>
-          <div class="product-footer">
-            <div class="product-price">$59.00 <span class="old">$70.00</span></div>
-            <div class="color-dots"><div class="color-dot" style="background:#e74c3c"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="unisex" data-id="7">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=500&auto=format&fit=crop&q=80" alt="Shopping" loading="lazy" />
-          <span class="product-badge">Nuevo</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Unisex · Bolsos</div>
-          <div class="product-name">Tote Bag Lumina</div>
-          <div class="product-footer">
-            <div class="product-price">$75.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#c9a84c"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="hombre" data-id="8">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&auto=format&fit=crop&q=80" alt="Fashion" loading="lazy" />
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Hombre · Formal</div>
-          <div class="product-name">Look Editorial Noche</div>
-          <div class="product-footer">
-            <div class="product-price">$95.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#2c3e50"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="mujer" data-id="9">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&auto=format&fit=crop&q=80" alt="Estilo" loading="lazy" />
-          <span class="product-badge">Exclusivo</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Mujer · Tops</div>
-          <div class="product-name">Blusa Lumina Signature</div>
-          <div class="product-footer">
-            <div class="product-price">$45.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#9b59b6"></div><div class="color-dot" style="background:#f5f5f5"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="ofertas" data-id="10">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&auto=format&fit=crop&q=80" alt="Oferta" loading="lazy" />
-          <span class="product-badge sale">-30%</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Mujer · Casual</div>
-          <div class="product-name">Set Casual Verano</div>
-          <div class="product-footer">
-            <div class="product-price">$49.00 <span class="old">$70.00</span></div>
-            <div class="color-dots"><div class="color-dot" style="background:#e74c3c"></div><div class="color-dot" style="background:#111"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="hombre" data-id="11">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&auto=format&fit=crop&q=80" alt="Ropa hombre" loading="lazy" />
-          <span class="product-badge sale">-20%</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Hombre · Pantalones</div>
-          <div class="product-name">Jean Slim Vintage</div>
-          <div class="product-footer">
-            <div class="product-price">$52.00 <span class="old">$65.00</span></div>
-            <div class="color-dots"><div class="color-dot" style="background:#1a5276"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-category="unisex" data-id="12">
-        <div class="product-image">
-          <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=500&auto=format&fit=crop&q=80" alt="Accesorios" loading="lazy" />
-          <span class="product-badge">Nuevo</span>
-          <button class="product-wishlist">♡</button>
-          <button class="product-quick-add">+ Agregar</button>
-        </div>
-        <div class="product-info">
-          <div class="product-category">Unisex · Accesorios</div>
-          <div class="product-name">Bolso Flame Edition</div>
-          <div class="product-footer">
-            <div class="product-price">$82.00</div>
-            <div class="color-dots"><div class="color-dot" style="background:#111"></div><div class="color-dot" style="background:#c9a84c"></div></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="products-grid-cat" id="catalogGrid" data-aos="fade-up" data-aos-duration="700"></div>
 
     <div class="pagination" data-aos="fade-up">
       <button class="page-btn active">1</button>
@@ -543,55 +332,187 @@
 <script src="js/main.js"></script>
 <script>
   AOS.init({ once: true, offset: 60 });
-  document.querySelectorAll('.size-btn').forEach(b => b.addEventListener('click', () => b.classList.toggle('active')));
-  document.querySelectorAll('.color-swatch').forEach(s => s.addEventListener('click', () => {
-    document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('active'));
-    s.classList.add('active');
-  }));
+
   const nav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
   const glow = document.getElementById('cursorGlow');
   document.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
 
-  // ── Inyectar ratings y stock en tarjetas estáticas ──
-  document.querySelectorAll('.product-card[data-id]').forEach(card => {
-    const p = getProduct(parseInt(card.dataset.id));
-    if (!p || !p.rating) return;
-    const info = card.querySelector('.product-info');
-    if (!info) return;
-    const cat = info.querySelector('.product-category');
-    const metaRow = document.createElement('div');
-    metaRow.className = 'product-meta-row';
-    metaRow.innerHTML = `
-      <div class="card-star-row">
-        <div style="display:flex;gap:2px">${starsHTML(p.rating)}</div>
-        <span class="card-rating">${p.rating}</span>
-        <span class="card-reviews">(${p.reviewCount})</span>
-      </div>
-      ${stockBadgeHTML(p.stock)}`;
-    cat.insertAdjacentElement('afterend', metaRow);
+  // ── SUB MAP: normaliza subcategorías para el filtro ──
+  const SUB_MAP = {
+    vestidos: ['vestidos'],
+    tops: ['tops'],
+    casual: ['casual'],
+    outfits: ['outfits'],
+    formal: ['formal'],
+    pantalones: ['pantalones'],
+    abrigos: ['abrigos'],
+    accesorios: ['accesorios'],
+    bolsos: ['bolsos'],
+    mochilas: ['mochilas'],
+    camisas: ['camisas'],
+  };
+
+  // ── ESTADO DE FILTROS ──
+  const fs = { category: 'all', subs: new Set(), maxPrice: 200 };
+
+  // ── RENDER DINÁMICO DE TARJETAS ──
+  function renderCatalog() {
+    const grid = document.getElementById('catalogGrid');
+    grid.innerHTML = LUMINA_PRODUCTS.map(p => {
+      const isOffer = p.oldPrice !== null;
+      const catKey  = p.category.toLowerCase();
+      const cats    = isOffer ? `${catKey} ofertas` : catKey;
+      const subKey  = p.sub.toLowerCase();
+      const stars   = p.rating ? starsHTML(p.rating) : '';
+      const stock   = p.stock  ? stockBadgeHTML(p.stock) : '';
+      const badge   = p.badge
+        ? `<span class="product-badge${p.badge.startsWith('-') ? ' sale' : ''}">${p.badge}</span>`
+        : '';
+      const oldPriceHTML = p.oldPrice
+        ? ` <span class="old">$${p.oldPrice.toFixed(2)}</span>` : '';
+      const dots = p.colors.slice(0,3)
+        .map(c => `<div class="color-dot" style="background:${c.hex}" title="${c.name}"></div>`)
+        .join('');
+      const metaRow = p.rating ? `
+        <div class="product-meta-row" style="display:flex;align-items:center;gap:6px;margin:4px 0 2px">
+          <div style="display:flex;gap:2px">${stars}</div>
+          <span style="font-size:12px;color:var(--text)">${p.rating}</span>
+          <span style="font-size:11px;color:var(--gray)">(${p.reviewCount})</span>
+          ${stock}
+        </div>` : '';
+
+      return `
+        <div class="product-card"
+             data-category="${cats}"
+             data-sub="${subKey}"
+             data-price="${p.price}"
+             data-id="${p.id}"
+             style="cursor:pointer"
+             onclick="if(!event.target.closest('button'))window.location.href='producto.html?id=${p.id}'">
+          <div class="product-image">
+            <img src="${p.img.replace('w=900','w=500')}" alt="${p.name}" loading="lazy" />
+            ${badge}
+            <button class="product-wishlist" onclick="event.stopPropagation()">♡</button>
+            <button class="product-quick-add" onclick="event.stopPropagation();addToCart(${p.id},'${p.name.replace(/'/g,"\\'")}',${p.price},'${p.img}','','')">+ Agregar</button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">${p.category} · ${p.sub}</div>
+            ${metaRow}
+            <div class="product-name">${p.name}</div>
+            <div class="product-footer">
+              <div class="product-price">$${p.price.toFixed(2)}${oldPriceHTML}</div>
+              <div class="color-dots">${dots}</div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+    applyFilters();
+  }
+
+  // ── APLICAR TODOS LOS FILTROS ──
+  function applyFilters() {
+    const cards = document.querySelectorAll('#catalogGrid .product-card[data-id]');
+    let count = 0;
+    cards.forEach(card => {
+      const cats  = card.dataset.category.split(' ');
+      const sub   = card.dataset.sub;
+      const price = parseFloat(card.dataset.price);
+      const matchCat   = fs.category === 'all' || cats.includes(fs.category);
+      const matchSub   = fs.subs.size === 0 || fs.subs.has(sub);
+      const matchPrice = price <= fs.maxPrice;
+      const show = matchCat && matchSub && matchPrice;
+      card.style.display = show ? '' : 'none';
+      if (show) count++;
+    });
+    const el = document.getElementById('catalogCount');
+    if (el) el.textContent = `Mostrando ${count} producto${count !== 1 ? 's' : ''}`;
+  }
+
+  // ── CAMBIO EN TABS DE CATEGORÍA ──
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      fs.category = tab.dataset.filter || 'all';
+      applyFilters();
+    });
   });
 
-  // ── Recently viewed ──
-  renderRecentlyViewed('recentlyViewedGrid');
+  // ── CAMBIO EN CHECKBOXES DE SUBCATEGORÍA ──
+  function onSubChange(cb) {
+    const sub = cb.dataset.sub;
+    if (sub === 'todas') {
+      if (cb.checked) {
+        fs.subs.clear();
+        document.querySelectorAll('#subCatList input[data-sub]').forEach(i => {
+          if (i.dataset.sub !== 'todas') i.checked = false;
+        });
+      }
+    } else {
+      document.querySelector('#subCatList input[data-sub="todas"]').checked = false;
+      if (cb.checked) fs.subs.add(sub);
+      else            fs.subs.delete(sub);
+      if (fs.subs.size === 0) {
+        document.querySelector('#subCatList input[data-sub="todas"]').checked = true;
+      }
+    }
+    applyFilters();
+  }
 
-  // ── Sort funcional ──
+  // ── CAMBIO EN PRECIO ──
+  function onPriceChange(val) {
+    fs.maxPrice = parseInt(val);
+    document.getElementById('price-val').textContent = val >= 200 ? '$200+' : `$${val}`;
+    applyFilters();
+  }
+
+  // ── LIMPIAR FILTROS ──
+  function resetFilters() {
+    fs.category = 'all';
+    fs.subs.clear();
+    fs.maxPrice = 200;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+    document.querySelectorAll('#subCatList input').forEach(i => { i.checked = i.dataset.sub === 'todas'; });
+    document.getElementById('priceRange').value = 200;
+    document.getElementById('price-val').textContent = '$200+';
+    applyFilters();
+    showToast('Filtros restablecidos');
+  }
+
+  // ── SORT ──
   document.querySelector('.catalog-sort').addEventListener('change', function() {
-    const grid = document.getElementById('catalogGrid');
+    const grid  = document.getElementById('catalogGrid');
     const cards = Array.from(grid.querySelectorAll('.product-card[data-id]'));
-    const val = this.value;
+    const val   = this.value;
     cards.sort((a, b) => {
       const pa = getProduct(parseInt(a.dataset.id));
       const pb = getProduct(parseInt(b.dataset.id));
       if (!pa || !pb) return 0;
-      if (val.includes('menor')) return pa.price - pb.price;
-      if (val.includes('mayor')) return pb.price - pa.price;
-      if (val.includes('nuevos')) return pb.id - pa.id;
-      if (val.includes('vendidos')) return (pb.reviewCount||0) - (pa.reviewCount||0);
+      if (val.includes('menor'))   return pa.price - pb.price;
+      if (val.includes('mayor'))   return pb.price - pa.price;
+      if (val.includes('nuevos'))  return pb.id - pa.id;
+      if (val.includes('vendidos'))return (pb.reviewCount||0) - (pa.reviewCount||0);
       return 0;
     });
     cards.forEach(c => grid.appendChild(c));
   });
+
+  // ── TALLAS (visual) ──
+  document.querySelectorAll('.size-btn').forEach(b =>
+    b.addEventListener('click', () => b.classList.toggle('active')));
+
+  // ── COLORES (visual) ──
+  document.querySelectorAll('.color-swatch').forEach(s =>
+    s.addEventListener('click', () => {
+      document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('active'));
+      s.classList.add('active');
+    }));
+
+  // ── INICIALIZAR ──
+  renderCatalog();
+  renderRecentlyViewed('recentlyViewedGrid');
 </script>
 </body>
 </html>

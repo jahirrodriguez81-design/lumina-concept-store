@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════ */
 
 const SUPABASE_URL      = 'https://itiprddtcgminlwhordg.supabase.co';
-const SUPABASE_ANON_KEY = 'REEMPLAZAR_CON_SB_PUBLISHABLE_KEY';
+const SUPABASE_ANON_KEY = 'sb_publishable_qWwKVTzub3CCotIlJDGXcg__yskL31K';
 
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 

@@ -692,6 +692,9 @@ function renderPayPalButtons() {
 
     // El monto lo calcula el servidor con precios reales
     createOrder: async function() {
+      const formError = validateDelivery();
+      if (formError) { showToast(formError); throw new Error(formError); }
+
       const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
       const payload = {
         items: items.map(i => ({ id: i.productId, qty: i.qty || 1 })),
@@ -749,9 +752,22 @@ async function openPaymentModal() {
   const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
   if (!items.length) { showToast('Tu carrito está vacío'); return; }
 
-  // Validar formulario antes de iniciar el pago
-  const formError = validateDelivery();
-  if (formError) { showToast(formError); return; }
+  // Auto-rellenar desde perfil si está logueado
+  if (typeof getProfile === 'function') {
+    try {
+      const profile = await getProfile();
+      if (profile) {
+        const nameEl  = document.getElementById('d-name');
+        const phoneEl = document.getElementById('d-phone');
+        const cityEl  = document.getElementById('d-city');
+        const addrEl  = document.getElementById('d-address');
+        if (nameEl  && !nameEl.value  && profile.nombre)   nameEl.value  = [profile.nombre, profile.apellidos].filter(Boolean).join(' ');
+        if (phoneEl && !phoneEl.value && profile.telefono) phoneEl.value = profile.telefono;
+        if (cityEl  && !cityEl.value  && profile.ciudad)   cityEl.value  = profile.ciudad;
+        if (addrEl  && !addrEl.value  && profile.direccion) addrEl.value = profile.direccion;
+      }
+    } catch(e) { /* silently ignore */ }
+  }
 
   const overlay = document.getElementById('paymentOverlay');
   const summary = document.getElementById('paymentSummary');

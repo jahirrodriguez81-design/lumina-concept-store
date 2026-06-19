@@ -479,4 +479,5 @@ if (contactForm) {
 document.addEventListener('DOMContentLoaded', () => {
   initChatbot();
   updateCartUI();
+  if (typeof updateNavAuth === 'function') updateNavAuth();
 });

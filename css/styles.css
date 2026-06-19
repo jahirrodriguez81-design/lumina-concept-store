@@ -130,6 +130,25 @@ input, textarea, select { font-family: inherit; }
 .nav-actions button:hover,
 .nav-actions a:hover { color: var(--white); }
 
+.btn-auth {
+  background: transparent !important;
+  color: var(--text) !important;
+  padding: 9px 16px !important;
+  border-radius: 100px !important;
+  border: 1px solid var(--border) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  font-family: 'DM Sans', sans-serif !important;
+  transition: border-color .2s, color .2s !important;
+  white-space: nowrap !important;
+}
+.btn-auth:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+.btn-auth.logged-in { border-color: var(--accent) !important; color: var(--accent) !important; }
+.btn-auth svg { stroke: currentColor; flex-shrink: 0; }
+
 .btn-cart {
   background: var(--accent) !important;
   color: var(--bg) !important;

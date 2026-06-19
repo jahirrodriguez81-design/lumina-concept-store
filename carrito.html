@@ -678,7 +678,7 @@ async function loadPayPalSDK() {
   const { paypalClientId } = await res.json();
   await new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(paypalClientId)}&currency=USD&components=buttons&enable-funding=card,venmo&disable-funding=paylater`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(paypalClientId)}&currency=USD&components=buttons&disable-funding=card,venmo,paylater`;
     script.onload = resolve;
     script.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
     document.head.appendChild(script);

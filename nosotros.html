@@ -194,6 +194,18 @@
       display: block; font-size: 13px; font-style: normal;
       color: var(--gray); margin-top: 24px; letter-spacing: .5px;
     }
+    @media (max-width: 768px) {
+      .about-hero { grid-template-columns: 1fr; min-height: auto; }
+      .about-hero-left { padding: calc(var(--nav-h) + 40px) 20px 40px; }
+      .about-hero-right { height: 260px; }
+      .about-hero-badge { bottom: 16px; right: 16px; padding: 14px 18px; }
+      .about-hero-badge .num { font-size: 28px; }
+      .mv-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2,1fr); }
+      .roadmap-section { grid-template-columns: 1fr; gap: 32px; }
+      .roadmap-visual { height: 260px; }
+      .big-quote { padding: 56px 20px; }
+    }
   </style>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -211,7 +223,7 @@
 <!-- NAV -->
 <nav class="nav scrolled" id="mainNav">
   <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Inicio</a></li>
     <li><a href="catalogo.html">Catálogo</a></li>
     <li><a href="nosotros.html" class="active">Nosotros</a></li>
@@ -226,6 +238,7 @@
     <a href="login.html" class="btn-auth" id="nav-auth-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Ingresar</a>
     <a href="carrito.html" class="btn-cart"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Carrito <span class="cart-count">0</span></a>
   </div>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()" aria-label="Menú"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->

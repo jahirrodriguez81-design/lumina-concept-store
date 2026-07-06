@@ -524,6 +524,26 @@
       transform: translate(-50%, -50%);
       z-index: 1000; transition: 0.1s;
     }
+
+    /* ══ HERO RESPONSIVE ══ */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr 1fr; }
+      .hero-left { padding: 80px 32px 80px 28px; }
+      .hero-stats { gap: 24px; }
+    }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: calc(var(--nav-h) + 40px) 20px 40px; }
+      .hero-right { height: 300px; }
+      .hero-img-collage { display: none; }
+      .hero-top-badge { display: none; }
+      .hero-accent-card { display: none; }
+      .hero-title { font-size: clamp(44px, 12vw, 72px); letter-spacing: -2px; }
+      .hero-desc { font-size: 14px; margin-bottom: 28px; }
+      .hero-stats { gap: 20px; margin-top: 36px; padding-top: 28px; flex-wrap: wrap; }
+      .newsletter-form { flex-direction: column; gap: 10px; }
+      .newsletter-form input, .newsletter-form button { width: 100%; }
+    }
   </style>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -542,7 +562,7 @@
 <!-- NAV -->
 <nav class="nav" id="mainNav">
   <a href="index.html" class="nav-logo">LUMIN<span>A</span></a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="index.html" class="active">Inicio</a></li>
     <li><a href="catalogo.html">Catálogo</a></li>
     <li><a href="nosotros.html">Nosotros</a></li>
@@ -563,6 +583,7 @@
       Carrito <span class="cart-count">0</span>
     </a>
   </div>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileMenu()" aria-label="Menú"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ══ HERO ══ -->

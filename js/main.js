@@ -7,6 +7,27 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   if (link.href === location.href) link.classList.add('active');
 });
 
+// ── HAMBURGER MENU ──
+function toggleMobileMenu() {
+  const links = document.getElementById('navLinks');
+  const btn   = document.getElementById('navHamburger');
+  if (!links) return;
+  links.classList.toggle('open');
+  if (btn) btn.classList.toggle('open');
+  document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+}
+
+// Cerrar menú al hacer click en un enlace
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    const links = document.getElementById('navLinks');
+    const btn   = document.getElementById('navHamburger');
+    if (links) links.classList.remove('open');
+    if (btn)   btn.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
 // ── CART STATE ──
 let cart = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
 

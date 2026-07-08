@@ -492,6 +492,9 @@ footer {
 }
 
 .footer-bottom p { color: rgba(255,255,255,.3); font-size: 13px; }
+.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-legal a { color: rgba(255,255,255,.3); font-size: 12px; text-decoration: none; transition: color .2s; }
+.footer-legal a:hover { color: var(--accent); }
 
 /* ══ FLOATING WIDGETS ══ */
 .wa-float {

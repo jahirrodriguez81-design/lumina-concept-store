@@ -5,13 +5,11 @@ const { sendOrderEmail } = require('../lib/email');
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
   try {
-    const { orderID } = req.body;
+    const { orderID, expectedTotal } = req.body;
     if (typeof orderID !== 'string' || !orderID.trim())
       return res.status(400).json({ error: 'orderID requerido' });
 
-    const pending = await getPendingOrder(orderID);
-    if (!pending) return res.status(400).json({ error: 'Orden no reconocida o ya procesada' });
-
+    // Capturar el pago en PayPal — esto es lo crítico
     const data = await capturePayPalOrder(orderID);
 
     if (data.status !== 'COMPLETED') {
@@ -23,25 +21,35 @@ module.exports = async (req, res) => {
       data.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value ?? '0'
     );
 
-    if (Math.abs(capturedAmount - pending.total) > 0.01) {
-      console.error(`[capture-order] Discrepancia: capturado $${capturedAmount}, esperado $${pending.total}`);
+    // Verificar monto contra Supabase (si está) o contra el total enviado por el cliente
+    let pending = null;
+    try { pending = await getPendingOrder(orderID); } catch (e) { /* tabla puede no existir */ }
+
+    const expectedAmt = pending?.total ?? expectedTotal ?? null;
+    if (expectedAmt !== null && Math.abs(capturedAmount - expectedAmt) > 0.01) {
+      console.error(`[capture-order] Discrepancia: capturado $${capturedAmount}, esperado $${expectedAmt}`);
       return res.status(400).json({ error: 'Discrepancia en el monto del pago' });
     }
 
-    await completeOrder(orderID);
+    // Marcar como completado en Supabase (no bloquea si falla)
+    try { await completeOrder(orderID); } catch (e) {
+      console.warn('[capture-order] No se pudo actualizar estado en Supabase:', e.message);
+    }
 
-    // Enviar ticket por correo (sin bloquear la respuesta al cliente)
+    // Enviar ticket por correo (no bloquea el pago si falla)
     const orderNum = 'LCS-' + Date.now().toString().slice(-6);
-    sendOrderEmail({
-      orderNum,
-      paypalOrderId: orderID,
-      delivery:  pending.delivery  || {},
-      items:     pending.items     || [],
-      subtotal:  pending.subtotal,
-      shipping:  pending.shipping,
-      discount:  pending.discount,
-      total:     pending.total,
-    }).catch(err => console.error('[email] Error enviando ticket:', err.message));
+    if (pending) {
+      sendOrderEmail({
+        orderNum,
+        paypalOrderId: orderID,
+        delivery:  pending.delivery  || {},
+        items:     pending.items     || [],
+        subtotal:  pending.subtotal  ?? capturedAmount,
+        shipping:  pending.shipping  ?? 0,
+        discount:  pending.discount  ?? 0,
+        total:     pending.total     ?? capturedAmount,
+      }).catch(err => console.error('[email] Error enviando ticket:', err.message));
+    }
 
     res.json({ success: true, orderID, orderNum });
   } catch (err) {

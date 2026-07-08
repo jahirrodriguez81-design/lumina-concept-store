@@ -661,6 +661,7 @@ async function applyPromo() {
 let paypalLoaded = false;
 let paypalRendered = false;
 let currentMethod = 'paypal';
+let lastExpectedTotal = null;
 
 // Total local solo para la vista previa del carrito — el monto real
 // siempre viene del servidor al abrir el modal o hacer checkout WA.
@@ -715,6 +716,7 @@ function renderPayPalButtons() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al crear la orden');
+      lastExpectedTotal = data.expectedTotal || null;
       return data.orderID;
     },
 
@@ -723,7 +725,7 @@ function renderPayPalButtons() {
       const res = await fetch('/api/capture-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderID: data.orderID }),
+        body: JSON.stringify({ orderID: data.orderID, expectedTotal: lastExpectedTotal }),
       });
       const result = await res.json();
       if (!res.ok) { showToast(result.error || 'Error al confirmar el pago'); return; }

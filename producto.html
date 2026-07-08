@@ -604,11 +604,36 @@ function handleAddToCart() {
   showToast(`${qty > 1 ? qty + 'x ' : ''}${product.name} en el carrito`);
 }
 
-function toggleWish(btn) {
-  const liked = btn.classList.toggle('liked');
-  btn.querySelector('path').setAttribute('fill', liked ? '#EF4444' : 'none');
-  showToast(liked ? 'Guardado en favoritos' : 'Eliminado de favoritos');
+async function toggleWish(btn) {
+  if (typeof toggleFavorite !== 'function') { window.location.href = 'login.html'; return; }
+  btn.disabled = true;
+  try {
+    const added = await toggleFavorite(pid);
+    if (added === null) return; // redirigió a login
+    btn.classList.toggle('liked', added);
+    btn.querySelector('path').setAttribute('fill', added ? '#EF4444' : 'none');
+    showToast(added ? '❤️ Guardado en favoritos' : 'Eliminado de favoritos');
+  } catch(e) {
+    showToast('Error al guardar favorito');
+  } finally {
+    btn.disabled = false;
+  }
 }
+
+async function initWishBtn() {
+  if (typeof getFavorites !== 'function') return;
+  try {
+    const favs = await getFavorites();
+    if (favs.includes(pid)) {
+      const btn = document.getElementById('wishBtn');
+      if (btn) {
+        btn.classList.add('liked');
+        btn.querySelector('path').setAttribute('fill', '#EF4444');
+      }
+    }
+  } catch(e) { /* usuario no logueado, no importa */ }
+}
+initWishBtn();
 
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));

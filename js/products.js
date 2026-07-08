@@ -5,7 +5,7 @@
 
 // Genera URL de imagen IA con prompt y semilla fija (siempre la misma imagen)
 function aiImg(prompt, seed) {
-  return `https://image.pollinations.ai/prompt/${prompt}?width=900&height=1100&nologo=true&seed=${seed}&model=flux`;
+  return `https://image.pollinations.ai/prompt/${prompt}?width=900&height=1100&nologo=true&seed=${seed}`;
 }
 
 const LUMINA_PRODUCTS = [

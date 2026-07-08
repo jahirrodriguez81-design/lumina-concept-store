@@ -5,7 +5,7 @@ const { saveOrder } = require('../lib/supabase');
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
   try {
-    const { items, promoCode } = req.body;
+    const { items, promoCode, delivery } = req.body;
     if (!Array.isArray(items) || items.length === 0)
       return res.status(400).json({ error: 'Carrito vacío' });
 
@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
       total, subtotal, shipping, discount,
       items,
       promoCode: promoCode || null,
+      delivery:  delivery  || null,
     });
 
     res.json({ orderID: order.id });

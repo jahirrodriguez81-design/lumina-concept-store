@@ -413,7 +413,7 @@
             <button class="product-quick-add" onclick="event.stopPropagation();addToCart(${p.id},'${p.name.replace(/'/g,"\\'")}',${p.price},'${p.img}','','')">+ Agregar</button>
           </div>
           <div class="product-info">
-            <div class="product-category">${p.category} · ${p.sub}</div>
+            <div class="product-category">${p.category} · ${p.sub} <span style="opacity:.5;margin-left:4px">#${'LCS-'+String(p.id).padStart(3,'0')}</span></div>
             ${metaRow}
             <div class="product-name">${p.name}</div>
             <div class="product-footer">

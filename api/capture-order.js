@@ -1,5 +1,6 @@
 const { capturePayPalOrder } = require('../lib/paypal');
 const { getPendingOrder, completeOrder } = require('../lib/supabase');
+const { sendOrderEmail } = require('../lib/email');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -29,7 +30,20 @@ module.exports = async (req, res) => {
 
     await completeOrder(orderID);
 
-    res.json({ success: true, orderID });
+    // Enviar ticket por correo (sin bloquear la respuesta al cliente)
+    const orderNum = 'LCS-' + Date.now().toString().slice(-6);
+    sendOrderEmail({
+      orderNum,
+      paypalOrderId: orderID,
+      delivery:  pending.delivery  || {},
+      items:     pending.items     || [],
+      subtotal:  pending.subtotal,
+      shipping:  pending.shipping,
+      discount:  pending.discount,
+      total:     pending.total,
+    }).catch(err => console.error('[email] Error enviando ticket:', err.message));
+
+    res.json({ success: true, orderID, orderNum });
   } catch (err) {
     console.error('[capture-order]', err.message);
     res.status(500).json({ error: 'Error interno al confirmar el pago' });

@@ -407,6 +407,7 @@ function renderProduct(p) {
 
       <div class="product-cat-label">${p.category} · ${p.sub}</div>
       <h1 class="product-title">${p.name}</h1>
+      <div style="font-size:11px;letter-spacing:1.5px;color:#555;margin-bottom:8px;font-family:'DM Sans',sans-serif">SKU: ${typeof formatSku === 'function' ? formatSku(p.id) : 'LCS-' + String(p.id).padStart(3,'0')}</div>
 
       ${p.rating ? `
       <div class="star-row">

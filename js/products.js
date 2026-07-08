@@ -375,6 +375,10 @@ const LUMINA_EXTENDED = {
 
 LUMINA_PRODUCTS.forEach(p => Object.assign(p, LUMINA_EXTENDED[p.id] || {}));
 
+function formatSku(id) {
+  return 'LCS-' + String(id).padStart(3, '0');
+}
+
 function getProduct(id) {
   return LUMINA_PRODUCTS.find(p => p.id === parseInt(id)) || null;
 }

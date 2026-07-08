@@ -697,9 +697,11 @@ function renderPayPalButtons() {
       if (formError) { showToast(formError); throw new Error(formError); }
 
       const items = JSON.parse(localStorage.getItem('lumina_cart') || '[]');
+      const d = getDeliveryData();
       const payload = {
-        items: items.map(i => ({ id: i.productId, qty: i.qty || 1 })),
+        items: items.map(i => ({ id: i.productId, name: i.name, price: i.price, size: i.size, color: i.color, qty: i.qty || 1 })),
         promoCode: activePromoCode || null,
+        delivery: { name: d.name, phone: d.phone, city: d.city, address: d.address },
       };
       const res = await fetch('/api/create-order', {
         method: 'POST',
@@ -721,7 +723,7 @@ function renderPayPalButtons() {
       const result = await res.json();
       if (!res.ok) { showToast(result.error || 'Error al confirmar el pago'); return; }
 
-      const orderNum = 'LCS-' + Date.now().toString().slice(-6);
+      const orderNum = result.orderNum || ('LCS-' + Date.now().toString().slice(-6));
       const d = getDeliveryData();
       const successEl = document.getElementById('paymentSuccess');
       successEl.innerHTML = `

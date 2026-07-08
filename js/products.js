@@ -3,9 +3,9 @@
    Imágenes generadas con IA (Pollinations.ai)
    ═══════════════════════════════ */
 
-// Genera URL de imagen con semilla fija (picsum.photos — siempre la misma foto por semilla)
+// Genera URL de imagen IA con prompt y semilla fija (Pollinations.ai — modelo sana gratuito)
 function aiImg(prompt, seed) {
-  return `https://picsum.photos/seed/${seed}/900/1100`;
+  return `https://image.pollinations.ai/prompt/${prompt}?width=600&height=750&nologo=true&seed=${seed}`;
 }
 
 const LUMINA_PRODUCTS = [

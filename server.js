@@ -27,6 +27,7 @@ app.use(
                       'https://fonts.googleapis.com', 'https://unpkg.com'],
         fontSrc:     ["'self'", 'https://fonts.gstatic.com'],
         imgSrc:      ["'self'", 'data:', 'https://images.unsplash.com',
+                      'https://image.pollinations.ai',
                       'https://www.paypalobjects.com'],
         connectSrc:  ["'self'", 'https://www.paypal.com',
                       'https://api-m.sandbox.paypal.com',

@@ -72,7 +72,9 @@ app.use('/api/create-order',  paymentLimiter);
 app.use('/api/capture-order', paymentLimiter);
 
 // ── Fuente de verdad de precios — el cliente nunca decide el precio ──
-const PAYPAL_API = 'https://api-m.sandbox.paypal.com';
+const PAYPAL_API = process.env.PAYPAL_ENV === 'live'
+  ? 'https://api-m.paypal.com'
+  : 'https://api-m.sandbox.paypal.com';
 
 const PRICES = {
   1:  68.00,  // Vestido Lumina Floral
@@ -87,6 +89,9 @@ const PRICES = {
   10: 49.00,  // Set Casual Verano
   11: 52.00,  // Jean Slim Vintage
   12: 82.00,  // Bolso Flame Edition
+  13: 36.00,  // Polo Piqué Premium
+  14: 55.00,  // Gafas Lumina Signature
+  15: 68.00,  // Mochila Urban Pro
 };
 
 const SHIPPING_THRESHOLD = 80;

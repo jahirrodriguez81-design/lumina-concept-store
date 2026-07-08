@@ -198,7 +198,7 @@ const chatbotData = {
     ]
   },
   wa: { msg: 'Abriendo WhatsApp... 📱', action: 'wa' },
-  email: { msg: 'Puedes escribirnos a lumina.store.ec@gmail.com — respondemos en menos de 24h 📧', options: [{ label: '🔙 Volver al menú', next: 'welcome' }] },
+  email: { msg: 'Puedes escribirnos a jahirrodleo19@gmail.com — respondemos en menos de 24h 📧', options: [{ label: '🔙 Volver al menú', next: 'welcome' }] },
   catalog_link: { msg: 'Redirigiendo al catálogo... 🛍', action: 'catalog' },
   wholesale_link: { msg: 'Redirigiendo a registro de mayoristas... 📋', action: 'wholesale_page' },
 };

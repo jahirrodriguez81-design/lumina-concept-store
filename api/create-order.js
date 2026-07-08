@@ -1,6 +1,6 @@
 const { calcTotal } = require('../lib/prices');
 const { createPayPalOrder } = require('../lib/paypal');
-const { saveOrder } = require('../lib/supabase');
+const { saveOrder, getSupabase } = require('../lib/supabase');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
@@ -8,6 +8,15 @@ module.exports = async (req, res) => {
     const { items, promoCode, delivery } = req.body;
     if (!Array.isArray(items) || items.length === 0)
       return res.status(400).json({ error: 'Carrito vacío' });
+
+    // Identificar usuario autenticado a partir del token de sesión
+    let userId = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.slice(7);
+      const { data } = await getSupabase().auth.getUser(token);
+      userId = data?.user?.id || null;
+    }
 
     const { total, subtotal, shipping, discount } = calcTotal(items, promoCode);
     const order = await createPayPalOrder(total);
@@ -18,6 +27,7 @@ module.exports = async (req, res) => {
       items,
       promoCode: promoCode || null,
       delivery:  delivery  || null,
+      userId:    userId    || null,
     });
 
     res.json({ orderID: order.id });

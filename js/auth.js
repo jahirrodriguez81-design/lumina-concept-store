@@ -86,8 +86,12 @@ async function toggleFavorite(productId) {
 
 // ── Mis pedidos ───────────────────────────────────────────
 async function getMyOrders() {
+  const user = await getCurrentUser();
+  if (!user) return [];
   const { data } = await _sb.from('orders')
-    .select('*').order('created_at', { ascending: false });
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
   return data || [];
 }
 

@@ -703,9 +703,14 @@ function renderPayPalButtons() {
         promoCode: activePromoCode || null,
         delivery: { name: d.name, phone: d.phone, city: d.city, address: d.address },
       };
+      const headers = { 'Content-Type': 'application/json' };
+      if (typeof getSession === 'function') {
+        const session = await getSession();
+        if (session?.access_token) headers['Authorization'] = 'Bearer ' + session.access_token;
+      }
       const res = await fetch('/api/create-order', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload),
       });
       const data = await res.json();

@@ -6,7 +6,7 @@ const LUMINA_PRODUCTS = [
     id: 1,
     name: 'Vestido Lumina Floral',
     category: 'Mujer', sub: 'Vestidos',
-    price: 68, oldPrice: null, badge: 'Nuevo',
+    price: 65, oldPrice: null, badge: 'Nuevo',
     img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&auto=format&fit=crop&q=80',
@@ -25,7 +25,7 @@ const LUMINA_PRODUCTS = [
     id: 2,
     name: 'Abrigo Oslo Premium',
     category: 'Hombre', sub: 'Abrigos',
-    price: 89, oldPrice: 120, badge: '-25%',
+    price: 120, oldPrice: 150, badge: '-20%',
     img: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&auto=format&fit=crop&q=80',
@@ -44,7 +44,7 @@ const LUMINA_PRODUCTS = [
     id: 3,
     name: 'Look Editora Urban',
     category: 'Mujer', sub: 'Casual',
-    price: 54, oldPrice: null, badge: null,
+    price: 52, oldPrice: null, badge: null,
     img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&auto=format&fit=crop&q=80',
@@ -63,7 +63,7 @@ const LUMINA_PRODUCTS = [
     id: 4,
     name: 'Kit Accesorios Dorados',
     category: 'Unisex', sub: 'Accesorios',
-    price: 42, oldPrice: null, badge: 'Top venta',
+    price: 32, oldPrice: null, badge: 'Top venta',
     img: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=900&auto=format&fit=crop&q=80',
@@ -82,7 +82,7 @@ const LUMINA_PRODUCTS = [
     id: 5,
     name: 'Camisa Linen Executive',
     category: 'Hombre', sub: 'Camisas',
-    price: 42, oldPrice: null, badge: null,
+    price: 28, oldPrice: null, badge: null,
     img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&auto=format&fit=crop&q=80',
@@ -101,7 +101,7 @@ const LUMINA_PRODUCTS = [
     id: 6,
     name: 'Jumpsuit Sunset Coral',
     category: 'Mujer', sub: 'Outfits',
-    price: 59, oldPrice: 70, badge: '-15%',
+    price: 72, oldPrice: 95, badge: '-24%',
     img: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&auto=format&fit=crop&q=80',
@@ -120,7 +120,7 @@ const LUMINA_PRODUCTS = [
     id: 7,
     name: 'Tote Bag Lumina',
     category: 'Unisex', sub: 'Bolsos',
-    price: 75, oldPrice: null, badge: 'Nuevo',
+    price: 85, oldPrice: null, badge: 'Nuevo',
     img: 'https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1483985988738-21d4e48faa58?w=900&auto=format&fit=crop&q=80',
@@ -139,7 +139,7 @@ const LUMINA_PRODUCTS = [
     id: 8,
     name: 'Look Editorial Noche',
     category: 'Hombre', sub: 'Formal',
-    price: 95, oldPrice: null, badge: null,
+    price: 150, oldPrice: null, badge: null,
     img: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&auto=format&fit=crop&q=80',
@@ -158,7 +158,7 @@ const LUMINA_PRODUCTS = [
     id: 9,
     name: 'Blusa Lumina Signature',
     category: 'Mujer', sub: 'Tops',
-    price: 45, oldPrice: null, badge: 'Exclusivo',
+    price: 38, oldPrice: null, badge: 'Exclusivo',
     img: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&auto=format&fit=crop&q=80',
@@ -177,7 +177,7 @@ const LUMINA_PRODUCTS = [
     id: 10,
     name: 'Set Casual Verano',
     category: 'Mujer', sub: 'Casual',
-    price: 49, oldPrice: 70, badge: '-30%',
+    price: 42, oldPrice: 58, badge: '-28%',
     img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&auto=format&fit=crop&q=80',
@@ -196,7 +196,7 @@ const LUMINA_PRODUCTS = [
     id: 11,
     name: 'Jean Slim Vintage',
     category: 'Hombre', sub: 'Pantalones',
-    price: 52, oldPrice: 65, badge: '-20%',
+    price: 45, oldPrice: 58, badge: '-22%',
     img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&auto=format&fit=crop&q=80',
@@ -215,7 +215,7 @@ const LUMINA_PRODUCTS = [
     id: 12,
     name: 'Bolso Flame Edition',
     category: 'Unisex', sub: 'Bolsos',
-    price: 82, oldPrice: null, badge: 'Nuevo',
+    price: 98, oldPrice: null, badge: 'Nuevo',
     img: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&auto=format&fit=crop&q=80',
@@ -234,7 +234,7 @@ const LUMINA_PRODUCTS = [
     id: 13,
     name: 'Polo Piqué Premium',
     category: 'Hombre', sub: 'Casual',
-    price: 36, oldPrice: null, badge: 'Nuevo',
+    price: 20, oldPrice: null, badge: 'Nuevo',
     img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80',
@@ -272,7 +272,7 @@ const LUMINA_PRODUCTS = [
     id: 15,
     name: 'Mochila Urban Pro',
     category: 'Unisex', sub: 'Mochilas',
-    price: 68, oldPrice: 90, badge: '-24%',
+    price: 78, oldPrice: 99, badge: '-21%',
     img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&auto=format&fit=crop&q=80',
     imgs: [
       'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&auto=format&fit=crop&q=80',

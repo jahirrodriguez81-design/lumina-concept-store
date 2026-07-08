@@ -77,21 +77,21 @@ const PAYPAL_API = process.env.PAYPAL_ENV === 'live'
   : 'https://api-m.sandbox.paypal.com';
 
 const PRICES = {
-  1:  68.00,  // Vestido Lumina Floral
-  2:  89.00,  // Abrigo Oslo Premium
-  3:  54.00,  // Look Editora Urban
-  4:  42.00,  // Kit Accesorios Dorados
-  5:  42.00,  // Camisa Linen Executive
-  6:  59.00,  // Jumpsuit Sunset Coral
-  7:  75.00,  // Tote Bag Lumina
-  8:  95.00,  // Look Editorial Noche
-  9:  45.00,  // Blusa Lumina Signature
-  10: 49.00,  // Set Casual Verano
-  11: 52.00,  // Jean Slim Vintage
-  12: 82.00,  // Bolso Flame Edition
-  13: 36.00,  // Polo Piqué Premium
+  1:  65.00,  // Vestido Lumina Floral
+  2:  120.00, // Abrigo Oslo Premium
+  3:  52.00,  // Look Editora Urban
+  4:  32.00,  // Kit Accesorios Dorados
+  5:  28.00,  // Camisa Linen Executive
+  6:  72.00,  // Jumpsuit Sunset Coral
+  7:  85.00,  // Tote Bag Lumina
+  8:  150.00, // Look Editorial Noche
+  9:  38.00,  // Blusa Lumina Signature
+  10: 42.00,  // Set Casual Verano
+  11: 45.00,  // Jean Slim Vintage
+  12: 98.00,  // Bolso Flame Edition
+  13: 20.00,  // Polo Piqué Premium
   14: 55.00,  // Gafas Lumina Signature
-  15: 68.00,  // Mochila Urban Pro
+  15: 78.00,  // Mochila Urban Pro
 };
 
 const SHIPPING_THRESHOLD = 80;

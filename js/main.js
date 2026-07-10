@@ -2,6 +2,20 @@
    LUMINA CONCEPT STORE — main.js
    ══════════════════════════════════════ */
 
+// ── TEMA CLARO / OSCURO ──
+function initTheme() {
+  const saved = localStorage.getItem('lumina_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+}
+initTheme();
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('lumina_theme', next);
+}
+
 // ── ACTIVE NAV LINK ──
 document.querySelectorAll('.nav-links a').forEach(link => {
   if (link.href === location.href) link.classList.add('active');

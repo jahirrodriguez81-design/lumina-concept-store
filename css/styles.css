@@ -25,6 +25,76 @@
   --nav-h:       72px;
 }
 
+/* ══ TEMA CLARO ══ */
+[data-theme="light"] {
+  --bg:          #F5F4EF;
+  --surface:     #FFFFFF;
+  --surface2:    #EEEDE8;
+  --surface3:    #E4E3DD;
+  --white:       #0A0A0A;
+  --accent:      #C4FF00;
+  --accent-dim:  rgba(196,255,0,0.14);
+  --accent-glow: rgba(196,255,0,0.30);
+  --gray:        rgba(0,0,0,0.45);
+  --gray-mid:    rgba(0,0,0,0.60);
+  --gray-light:  rgba(0,0,0,0.07);
+  --gray-border: rgba(0,0,0,0.10);
+}
+
+[data-theme="light"] .nav.scrolled {
+  background: rgba(245,244,239,0.95);
+}
+
+@media (max-width: 768px) {
+  [data-theme="light"] .nav-links {
+    background: rgba(245,244,239,.97);
+  }
+}
+
+[data-theme="light"] .footer-bottom p,
+[data-theme="light"] .footer-legal a { color: rgba(0,0,0,.35); }
+[data-theme="light"] .footer-legal a:hover { color: var(--accent); }
+
+[data-theme="light"] .btn-white:hover { box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+
+[data-theme="light"] ::selection { background: var(--accent); color: #0A0A0A; }
+
+[data-theme="light"] .btn-cart,
+[data-theme="light"] .btn-accent,
+[data-theme="light"] .btn-outline-accent:hover,
+[data-theme="light"] .marquee-wrap.inverted .marquee-item,
+[data-theme="light"] .product-badge,
+[data-theme="light"] .product-quick-add,
+[data-theme="light"] .chatbot-avatar,
+[data-theme="light"] .chat-msg.user,
+[data-theme="light"] .chatbot-footer button,
+[data-theme="light"] .step-num,
+[data-theme="light"] .filter-tab.active,
+[data-theme="light"] .size-btn.active,
+[data-theme="light"] .page-btn.active { color: #0A0A0A !important; }
+
+/* ══ BOTÓN TOGGLE TEMA ══ */
+.btn-theme {
+  background: none;
+  border: none;
+  color: var(--gray);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .2s, background .2s;
+  flex-shrink: 0;
+}
+.btn-theme:hover {
+  color: var(--white);
+  background: var(--gray-light);
+}
+.icon-sun { display: none; }
+[data-theme="light"] .icon-moon { display: none; }
+[data-theme="light"] .icon-sun { display: block; }
+
 html { scroll-behavior: smooth; }
 
 body {
